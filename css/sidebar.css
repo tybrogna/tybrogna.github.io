@@ -1,100 +1,212 @@
-.profile {
-	margin: 20px 0;
+/***
+by keenthemes
+***/
+
+html {
 }
 
+body {
+}
+
+h1 {
+    text-align: center;
+}
+
+.nopadding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Profile container */
+.sidebar {
+  /*argin: 20px 0;*/
+  position: fixed;
+  overflow-y: auto;
+  z-index: 1000;
+  background-color: #252831;
+}
+
+/* Profile sidebar */
 .profile-sidebar {
-	padding: 20px 0 10px 0;
-	background: #fff;
+  padding: 20px 0 10px 0;
+  /*background-color: #252831;*/
+}
+
+.userpic {
+    margin: 0 auto;
+    width: 50%;
+    height: 50%;
+}
+
+.side-title {
+    text-align: center;
+    margin-top: 20px;
 }
 
 .profile-userpic img {
-	float: none;
-	margin: 0 auto;
-	width: 50%;
-	height: 50%;
-	-webkit-border-radius: 50% !important;
-	-moz-border-radius: 50% !important;
-	border-radius: 50% !important;
+  float: none;
+  margin: 0 auto;
+  width: 50%;
+  height: 50%;
+  border-radius: 15%;
 }
 
 .profile-usertitle {
-	text-align: center;
-	margin-top: 20px;
+  text-align: center;
+  margin-top: 20px;
 }
 
-.profile-usertitle-name {
-	color: #5a7391;
-	font-size: 16px;
-	font-weight: 600;
-	margin-bottom: 7px;
+.side-title-name {
+  color: #5a7391;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 7px;
 }
 
-.profile-usertitle-job {
-	text-transform: uppercase;
-	color: #5b9bd1;
-	font-size: 12px;
-	font-weight: 600;
-	margin-bottom: 15px;
+.side-title-job {
+  text-transform: uppercase;
+  color: #5b9bd1;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 15px;
 }
 
-.profile-userbuttons {
-	text-align: center;
-	margin-top: 10px;
+.side-buttons {
+  text-align: center;
+  margin-top: 10px;
 }
 
-.profile-userbuttons .btn {
-	text-transform: uppercase;
-	font-size: 11px;
-	font-weight: 600;
-	padding: 6px 15px;
-	margin-right: 5px;
+.side-buttons .btn {
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 15px;
+  margin-right: 5px;
 }
 
 .profile-userbuttons .btn:last-child {
-	margin-right: 0px;
+  margin-right: 0px;
 }
 
 .profile-usermenu {
-	margin-top: 30px;
+  margin-top: 30px;
+  background-color: #252831;
 }
 
 .profile-usermenu ul li {
-	border-bottom: 1px solid #f0f4f7;
+  border-left: 1px solid #93a3b5;
 }
 
 .profile-usermenu ul li:last-child {
-	border-bottom: none;
+  /*border-bottom: none;*/
 }
 
 .profile-usermenu ul li a {
-	color: #93a3b5;
-	font-size: 14px;
-	font-weight: 400;
+  color: #93a3b5;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .profile-usermenu ul li a i {
-	margin-right: 8px;
-	font-size: 14px;
-}
-
-.profile-usermenu ul li a:hover {
-	background-color: #fafcfd;
-	color: #5b9bd1;
+  margin-right: 8px;
+  font-size: 14px;
 }
 
 .profile-usermenu ul li.active {
-	border-bottom: none;
+  border-color: #232831;
+}
+
+.profile-usermenu ul li:hover {
+  /*border-color: #252831;*/
+  border-radius: 3px;
+  background-color: #2a324b;
 }
 
 .profile-usermenu ul li.active a {
-	color: #5b9bd1;
-	background-color: #f6f9fb;
-	border-left: 2px solid #5b9bd1;
-	margin-left: -2px;
+  color: #5b9bd1;
+  background-color: #252831;
+  border-left: 2px solid #5b9bd1;
+  margin-left: -2px;
 }
 
+.profile-usermenu ul li:hover a {
+    background-color: #2a324b;
+}
+
+.home-content {
+    margin-left: 25px;
+    margin-right: 25px;
+    text-align: left;
+}
+
+.more-spacing {
+    line-height: 2.0;
+}
+
+.img-fitter {
+    padding-left: 10px;
+    padding-right: 10px;
+    max-width: 100%;
+    height: 100px;
+    margin: auto;
+    display: block;
+}
+
+/* Profile Content */
 .profile-content {
   padding: 20px;
-  background: #fff;
+  color: #93a3b5;
+  /*background-color: #252831;*/
   min-height: 460px;
+}
+
+.content-header {
+    width: auto;
+}
+
+.content-header-title {
+    height: auto;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    background-color: #4a4f5e;
+}
+
+.content-header-title-text {
+    color: #ffffff;
+    font-size: 48px;
+}
+
+.content-header-contact-text {
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.resume-content {
+    padding-left: 40px;
+    padding-top: 40px;
+}
+
+.resume-sections {
+    margin-bottom: 14px;
+}
+
+.resume-details-text {
+    padding-left: 25px;
+}
+
+.resume-title-text {
+    background: #afb4c6;
+    font-size: 20px;
+    padding-left: 10px;
+    padding-top: 5px;
+    border-left: 3px solid #252831;
+}
+
+.padding-top {
+    padding-top: 25px;
+}
+
+.no-margin {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }

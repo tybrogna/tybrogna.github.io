@@ -1,72 +1,130 @@
+<!DOCTYPE html>
 <html>
-    <style src="css/bootstrap.css" />
-    <style src="css/sidebar.css" />
-
     <head>
-        hello
+        <title>Tyler Brogna</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/sidebar.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
 
     <body>
-        <div class="container">
-            <div class="row profile">
-                <div class="col-md-3">
+        <div class="container-fluid">
+            <div class="row content">
+                <!-- Sidebar -->
+                <div class="col-md-3 sidebar" data-spy="affix">
                     <div class="profile-sidebar">
-                        <div class="profile-userpic">
-                            <img src="wow.jpg" />
+
+                        <div class="userpic">
+                            <img src="img/me.jpg" class="img-responsive center-block img-thumbnail" alt="">
                         </div>
 
-                        <div class="profile-usertitle">
-                            <div class="profile-usertitle-name">
-                                MR MEME
+                        <div class="side-title">
+                            <div class="side-title-name">
+                                Tyler Brogna
                             </div>
-                            <div class="profile-usertitle-name">
-                                MEMER
+                            <div class="side-title-job">
+                                Software Developer
                             </div>
                         </div>
 
-                        <div class="profile-userbuttons">
-                            <button type="button" class="btn btn-success btn-sm">SLAMS</button>
-                            <button type="button" class="btn btn-danger btn-sm">JAM WITH ME</button>
+                        <!--
+                        <div class="side-buttons">
+                            <button type="button" class="btn btn-success btn-sm">stp</button>
+                            <button type="button" class="btn btn-danger btn-sm">w8</button>
                         </div>
+                        -->
 
                         <div class="profile-usermenu">
-                            <ul class="nav">
+                            <ul class="nav nav-pills nav-stacked">
                                 <li class="active">
-                                    <a href="#">
-                                        <i class="glyphicon glpyhicon-home"></i>
-                                        TRASH
-                                    </a>
+                                    <a href="index.html">
+                                    <span class="glyphicon glyphicon-home"></span>
+                                    Home </a>
                                 </li>
-                                <li class="active">
+                                <li>
                                     <a href="#">
-                                        <i class="glyphicon glpyhicon-user"></i>
-                                        SHIT
-                                    </a>
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    About Me</a>
                                 </li>
-                                <li class="active">
-                                    <a href="#">
-                                        <i class="glyphicon glpyhicon-ok"></i>
-                                        FIRE
-                                    </a>
+                                <!--
+                                <li>
+                                    <a href="#" target="_blank">
+                                    <i class="glyphicon glyphicon-ok"></i>
+                                    Projects </a>
                                 </li>
-                                <li class="active">
-                                    <a href="#">
-                                        <i class="glyphicon glpyhicon-flag"></i>
-                                        airhorn.wav
-                                    </a>
+                                -->
+                                <li>
+                                    <a href="/resume.html">
+                                    <i class="glyphicon glyphicon-flag"></i>
+                                    Online Resume </a>
                                 </li>
                             </ul>
                         </div>
 
-                        <div class="col-md-9">
-                            <div class="profile-content">
-                                you think youre better than me? huh? wanna fight??
+                    </div>
+                    <div>
+                        <div class="profile-content">
+                            Sidebar partially borrowed from <a href="http://j.mp/metronictheme" target="_blank">KeenThemes</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Site -->
+                <div class="col-md-9 col-md-offset-3 nopadding site-content">
+                    <!-- Header -->
+                    <div class="content-header">
+                        <div class="content-header-title">
+                            <div class="content-header-title-text text-center">
+                                Tyler Brogna
+                            </div>
+                            <div class="text-center content-header-contact-text">
+                                <div>
+                                    8 Majorca Ln, Clifton Park, NY 12065
+                                </div>
+                                <div>
+                                    518 257 2175 - tybrogna@gmail.com
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <center>
-                        <strong>Stolen From <a href="http://j.mp/metronictheme" target="_blank">KeenThemes</a></strong>
-                    </center>
+
+                    <div class="row content no-margin padding-top">
+                        <div class="col-sm-4 text-center nopadding">
+                            <h1>Education</h1>
+                            <div class="home-content">
+                                <div>
+                                    <img src="img/rit.jpg" class="img-fitter"/>
+                                    <br>
+                                    <br>
+                                    <div class="more-spacing">
+                                        From 2010 to 2014, I attended Rochester Insititute of Technology. I earned my degree in Game Design and Development, with a minor in Digital Literature. I would describe my degree as a Software Engineering degree with an empahsis on Human Computer Interaction. I attened classes about game physics programming, graphics programming and MMO networking.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 text-center nopadding">
+                            <h1>Work</h1>
+                            <div class="home-content">
+                                <img src="img/conduent.png" class="img-fitter" />
+                                <br>
+                                <br>
+                                <div class="more-spacing">
+                                    I was hired at Conduent Legal and Compliance Services in July 2015 (then Xerox Litigation Services). There I worked with PHP and PL/SQL to write features and fix bugs for the company's main web app. I also supported an automated testing application for the same web app. I also worked with supplemental, in development products with Perl and Python. I was laid off in June 2017 in a series of layoffs from the parent company.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 text-center nopadding">
+                            <h1>Goals</h1>
+                            <div class="home-content">
+                                <img src="img/controller.png" class="img-fitter">
+                                <br>
+                                <br>
+                                <div class="more-spacing">
+                                    My education and friends have always inspired me to look at video games critically, and to write and develop my own designs. I research and stay current on new development tools to keep sharp on tech trends and to use new ideas.
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
