@@ -19,9 +19,9 @@ h1 {
 
 /* Profile container */
 .sidebar {
-  /*argin: 20px 0;*/
   position: fixed;
   overflow-y: auto;
+  height:100%;
   z-index: 1000;
   background-color: #252831;
 }
