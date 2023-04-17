@@ -2,131 +2,257 @@
 <html>
     <head>
         <title>Tyler Brogna</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/sidebar.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <style>
+            .svg-wide {
+                height: 100%;
+            }
+            .tb-row-top-margin {
+              margin-bottom: 1em;
+            }
+        </style>
+        <script src="js/bootstrap.js"></script>
     </head>
 
-    <body>
-        <div class="container-fluid">
-            <div class="row content">
-                <!-- Sidebar -->
-                <div class="col-md-3 sidebar" data-spy="affix">
-                    <div class="profile-sidebar">
-
-                        <div class="userpic">
-                            <img src="img/me.jpg" class="img-responsive center-block img-thumbnail" alt="">
-                        </div>
-
-                        <div class="side-title">
-                            <div class="side-title-name">
-                                Tyler Brogna
-                            </div>
-                            <div class="side-title-job">
-                                Software Developer
-                            </div>
-                        </div>
-
-                        <!--
-                        <div class="side-buttons">
-                            <button type="button" class="btn btn-success btn-sm">stp</button>
-                            <button type="button" class="btn btn-danger btn-sm">w8</button>
-                        </div>
-                        -->
-
-                        <div class="profile-usermenu">
-                            <ul class="nav nav-pills nav-stacked">
-                                <li class="active">
-                                    <a href="/index.html">
-                                    <span class="glyphicon glyphicon-home"></span>
-                                    Home </a>
-                                </li>
-                                <!--
-                                <li>
-                                    <a href="#">
-                                    <i class="glyphicon glyphicon-user"></i>
-                                    About Me</a>
-                                </li>
-                                <li>
-                                    <a href="#" target="_blank">
-                                    <i class="glyphicon glyphicon-ok"></i>
-                                    Projects </a>
-                                </li>
-                                -->
-                                <li>
-                                    <a href="/resume.html">
-                                    <i class="glyphicon glyphicon-flag"></i>
-                                    Online Resume </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                    </div>
-                    <div>
-                        <div class="profile-content">
-                            Sidebar partially borrowed from <a href="http://j.mp/metronictheme" target="_blank">KeenThemes</a>
-                        </div>
-                    </div>
+    <body class="bg-secondary">
+        <div class="container-fluid bg-dark text-light">
+            <hr />
+            <div class="row justify-content-center">
+                <div class="col-sm-1">
+                    <img class="img-fluid" src="img/me.jpg" />
                 </div>
-                <!-- Site -->
-                <div class="col-md-9 col-md-offset-3 nopadding site-content">
-                    <!-- Header -->
-                    <div class="content-header">
-                        <div class="content-header-title">
-                            <div class="content-header-title-text text-center">
-                                Tyler Brogna
-                            </div>
-                            <div class="text-center content-header-contact-text">
-                                <div>
-                                    8 Majorca Ln, Clifton Park, NY 12065
-                                </div>
-                                <div>
-                                    518 257 2175 - tybrogna@gmail.com
-                                </div>
-                            </div>
-                        </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-6 text-center">
+                    <h1>Tyler Brogna</h1>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-4 text-center">
+                    <h4>Massachusetts, USA</h4>
+                </div>
+                <div class="col-4 text-center">
+                    <h4>tybrogna@gmail.com</h4>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="container text-light text-center">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <p>As long as I can remember, I had always been fascinated by computers. One of my earliest memories is of slamming game cartridges into a long-antiquated Atari 2600. Video games were my first look into the world of programming and computers, and as I grew older, I was given opportunities to both play and learn all manner of electronic devices.</p>
+                    <p>Educated at RIT, I studied not just computer science, but also game design and user experience. I also gained further appreciation for how emergent stories are told through play.</p>
+                    <p>Always seeking something new, my current career applies my knowledge, working professionally on software development. Meanwhile, my interests take me into a variety of personally unknown places, like small electronics tinkering and martial arts.</p>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="container text-light">
+            <div class="row">
+                <div class="col text-left bg-dark">
+                    <h3>Professional Work</h3>
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-start">
+                <div class="row justify-content-start">
+                    <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
+                        <h4>Accusoft</h4>
+                        <p>Software Engineer III <br> Sep 2022 - Present <br> Tampa Bay, FL.</p>
+                        <p>Worked on a team to maintain and expand functionality of a document processing API, used to convert document formats into raster and vector images.</p>
                     </div>
-
-                    <div class="row content no-margin padding-top">
-                        <div class="col-sm-4 text-center nopadding">
-                            <h1>Education</h1>
-                            <div class="home-content">
-                                <div>
-                                    <img src="img/rit.jpg" class="img-fitter"/>
-                                    <br>
-                                    <br>
-                                    <div class="more-spacing">
-                                        From 2010 to 2014, I attended Rochester Insititute of Technology. I earned my degree in Game Design and Development, with a minor in Digital Literature. I would describe my degree as a Software Engineering degree with an empahsis on Human Computer Interaction. I attened classes about game physics programming, graphics programming and MMO networking.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 text-center nopadding">
-                            <h1>Work</h1>
-                            <div class="home-content">
-                                <img src="img/conduent.png" class="img-fitter" />
-                                <br>
-                                <br>
-                                <div class="more-spacing">
-                                    I was hired at Conduent Legal and Compliance Services in July 2015 (then Xerox Litigation Services). There I worked with PHP and PL/SQL to write features and fix bugs for the company's main web app. I also supported an automated testing application for the same web app. I also worked with supplemental, in development products with Perl and Python. I was laid off in June 2017 in a series of layoffs from the parent company.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 text-center nopadding">
-                            <h1>Goals</h1>
-                            <div class="home-content">
-                                <img src="img/controller.png" class="img-fitter">
-                                <br>
-                                <br>
-                                <div class="more-spacing">
-                                    My education and friends have always inspired me to look at video games critically, and to write and develop my own designs. I research and stay current on new development tools to keep sharp on tech trends and to use new ideas.
-                                </div>
-                            </div> 
-                        </div>
+                    <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
+                        <h4>Snowbound Software</h4>
+                        <p>Software Engineer <br> Jan 2018 - Sept 2022 <br> Acquired by Accusoft <br> Waltham, MA.</p>
+                    </div>
+                    <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
+                        <h4>Conduent Legal and Compliance Services</h4>
+                        <p>Software Developer <br> Jul 2015 - Jun 2017 <br> Albany, NY.</p>
+                        <p>Created web apps with PHP for data compliation, for interal use. Created automated testing frameworks for a website using Selenium.</p>
                     </div>
                 </div>
             </div>
         </div>
+        <hr />
+        <div class="container text-light">
+            <div class="row">
+                <div class="col text-left bg-dark">
+                    <h3>Professional Projects</h3>
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-start">
+                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
+                    <h4>Microsoft Excel Content Layout</h4>
+                    <p>Accusoft/Snowbound</p>
+                    <p>The largest, and in my opinion, most impressive I worked on at Snowbound Software. I was to create a system to lay out all content in a Microsoft Excel spreadsheet. Written in Java, this involved writing data structures and systems needed to make rendered images "look right," according to the Open Office XML Specifications. This didn't just include sheets and cells, but also headers/footers, image anchors, fonts, styles, text alignment and conditional formats.</p>
+                </div>
+                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
+                    <h4>DrawingML Charts for Microsoft Office Layout</h4>
+                    <p>Accusoft/Snowbound</p>
+                    <p>I was the sole engineer working to create a system to parse and lay out all content in Microsoft Office Charts. Created all systems and data structures to draw line, bar, area, circular, and combination plots. Included systems to display legends, titles, axis labels, and data labels. Written in Java.</p>
+                </div>
+                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
+                    <h4>DrawingML Charts for Microsoft Office Layout, With JFreeChart</h4>
+                    <p>Accusoft/Snowbound</p>
+                    <p>The latest project I handled at Accusoft; its charts again but with a twist. Information was gleaned from my previous charts work that things could not continue at the same speed and quality, so it was decided that a library would be used. JFreeChart was implemented to overtake the functions of all previous plots, but now handle 3D plots and more esoteric plots. The transition leveraged a lot of both my Microsoft Chart and Java knowledge.</p>
+                </div>
+                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
+                    <h4>Microsoft Excel Custom Number Formats</h4>
+                    <p>Accusoft/Snowbound</p>
+                    <p>The oldest of my projects at Snowbound Software, I was to create a system to parse and format Microsoft Excel custom number formats. Handled numbers, dates, and times to display the same as Excel. Works across multiple locales. Written in Java and C#.</p>
+
+                </div>
+
+            </div>
+        </div>
+        <hr />
+        <div class="container text-light">
+            <div class="row">
+                <div class="col text-left bg-dark">
+                    <h3>Personal Projects</h3>
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-start">
+                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
+                    <h4>Toom World</h4>
+                    <p>Designed and programmed a 3D video on a team of three in one month, part of a community game jam hosted on itch.io. Worked on game architecture, enemy AI, and character controller. Contributed to the game design and level design. Written in Godot with GDscript. <a class="text-light" href="https://tavoe.itch.io/toom-world">Play on itch.io.</a></p>
+                </div>
+                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
+                    <h4>Bingo Web App</h4>
+                    <p>Used Node.js, express.js, and SQLite3. Created for practice to learn server side web development. Site accepted user input and generated bingo cards.</p>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="container text-light">
+            <div class="row">
+                <div class="col text-left bg-dark">
+                    <h3>Education</h3>
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-start">
+                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
+                    <h4>Rochester Insitiute of Technology</h4>
+                    <p>Bachelor of Science in Game Design and Development <br> Minor in Digital Literature and Technology <br> Sep 2010 - May 2014</p>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="container text-light">
+            <div class="row">
+                <div class="col text-left bg-dark">
+                    <h3>Skills, Languages, and Tools</h3>
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-start">
+                <div class="col-sm-2 border-start border-dark border-2">
+                    Java
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    C#
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    JavaScript
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    C++
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    GDScript
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    Python
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    SQLite3
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    Node.js
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    Git
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    JFreeChart
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    Unity 3D
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    Godot
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    IntelliJ
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    Visual Studio
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    VS Code
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    Maven
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    Teamcity
+                </div>
+                <div class="col-sm-2 border-start border-dark border-2">
+                    Microsoft Office
+                </div>
+            </div>
+       </div>
+       <hr />
+        <div class="container text-light">
+            <div class="row">
+                <div class="col text-left bg-dark">
+                    <h3>Other Experiences</h3>
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-start">
+                <div class="col-md-4 border-start border-dark border-2">
+                    Martial Artist
+                </div>
+                <div class="col-md-4 border-start border-dark border-2">
+                    Video Game Collector
+                </div>
+                <div class="col-md-4 border-start border-dark border-2">
+                    Downhill Skiier
+                </div>
+            </div>
+            <div class="row justify-content-start">
+                <div class="col-md-4 border-start border-dark border-2">
+                    Small Electronics Tinkerer
+                </div>
+                <div class="col-md-4 border-start border-dark border-2">
+                    Science Fiction/Fantasy Reader
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="container text-light">
+            <div class="row">
+                <div class="col text-left bg-dark">
+                    <h3>Links</h3>
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-around">
+                <div class="col-sm-2">
+                    <a href="https://www.linkedin.com/in/tyler-brogna-43468683/">
+                        <img class="img-fluid" src="img/li.png" />
+                    </a>
+                </div>
+                <div class="col-sm-2">
+                    <img class="img-fluid svg-wide" src="img/filedl.svg" />
+                </div>
+            </div>
+        </div>
+        <hr />
+        <br>
     </body>
 </html>
