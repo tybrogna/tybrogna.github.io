@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>Tyler Brogna</title>
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <script src="js/bootstrap.js"></script>
+        <script src="js/functionhider.js"></script>
+        <script src="data/content.js"></script>
+        <style>
+            @font-face {
+                font-family: "C64Pro";
+                src: url(font/C64_Pro-STYLE.eot);
+                src: url(font/C64_Pro-STYLE.woff) format("woff");
+                src: url(font/C64_Pro-STYLE.otf) format("opentype");
+            }
+
+            @font-face {
+                font-family: "PrintChar21";
+                src: url(font/PrintChar21.woff2) format("woff2");
+            }
+
+            .computer-bg {
+                background: #686868;
+            }
+
+            @media screen and (max-width: 999px) {
+                .terminal-window-ht {
+                    position: fixed;
+                    width: 100%;
+                }
+            }
+
+            @media screen and (min-width: 1000px) {
+                .terminal-window-ht {
+                  position: fixed;
+                  left: 12%;
+                  width: 76%;
+                }
+            }
+
+            @media screen and (max-height: 825px) {
+                .terminal-window-ht {
+                    height: 100%;
+                }
+
+                .content-scroll {
+                    overflow-y: scroll;
+                    scrollbar-width: none;
+                    max-height: 66%;
+                }
+            }
+
+            @media screen and (min-height: 826px) and (max-height: 1200px) {
+                .terminal-window-ht {
+                    top: 12%;
+                    bottom: 12%;
+                }
+
+                .content-scroll {
+                    overflow-y: scroll;
+                    scrollbar-width: none;
+                    max-height: 58%;
+                }
+            }
+
+            @media screen and (min-height: 1201px) {
+                .terminal-window-ht {
+                    top: 12%;
+                    bottom: 12%;
+                }
+
+                .content-scroll {
+                    overflow-y: scroll;
+                    scrollbar-width: none;
+                    max-height: 70%;
+                }
+            }
+
+            .terminal-style {
+                font-family: 'PrintChar21';
+                background: #010101;
+                color: #1fc742;
+            }
+
+/*            .content-scroll {
+                overflow-y: scroll;
+                scrollbar-width: none;
+                max-height: 58%;
+            }*/
+
+            .ff-content-scroll {
+                scrollbar-width: none;
+            }
+
+            .wk-content-scroll::-webkit-scrollbar {
+                width: 0 !important;
+            }
+
+            .margin-top {
+                margin-top: 15px;
+            }
+
+            .padding-left {
+                padding-left: 1em;
+            }
+
+            input {
+                border-top-style: hidden;
+                border-right-style: hidden;
+                border-left-style: hidden;
+                border-bottom-style: hidden;
+                outline: none;
+                caret-shape: block;
+            }
+
+            .nomoni {
+                color: transparent;
+            }
+
+        </style>
+
+        <script>
+            let computerSpeed = 1
+            let inputSpeed = 45
+            let contentCount = 0
+            let commandHtml, contentHtml
+            const isMobile = checkMobile()
+            const isWebkit = !navigator.userAgent.match(/firefox|fxios/i);
+
+
+            let MONC = true
+            let MONI = true
+            let MONO = true
+
+            window.onload = writeInitial
+            window.onresize = resizeWindow
+
+            function resizeWindow(event) {
+                contentHtml.scrollTop = contentHtml.scrollHeight
+            }
+            
+            function applyStyles() {
+                if (isWebkit) contentHtml.classList.add("wk-content-scroll");
+                else contentHtml.classList.add("ff-content-scroll");
+            }
+
+            async function writeInitial() {
+                commandHtml = document.querySelector("#commandBox")
+                contentHtml = document.querySelector("#content")
+                resizeWindow()
+
+                commandHtml.value = ''
+                await applyStyles()
+                await delay(500)
+                await justDisplay(document.querySelector("#th0"), headerJSON[0])
+                await delay(500)
+                await justDisplay(document.querySelector("#th1"), headerJSON[1])
+                await delay(200)
+                await justDisplay(document.querySelector("#th2"), headerJSON[2])
+                await delay(100)
+                await justDisplay(document.querySelector("#th3"), headerJSON[3])
+                await justDisplay(document.querySelector("#entryPrompt"), "]")
+
+                commandHtml.addEventListener("keypress", function(press) {
+                    if (press.key === "Enter") {
+                        handleInput(commandHtml.value)
+                    }
+                })
+
+                await delay(250)
+                await createLink(document.querySelector("#options1"), 'Work History', 'OPEN wh')
+                await createLink(document.querySelector("#options1"), 'Work Projects', 'OPEN wp')
+                await createLink(document.querySelector("#options1"), 'Personal Projects', 'OPEN pp')
+                await createLink(document.querySelector("#options1"), 'Education', 'OPEN edu')
+                await createLink(document.querySelector("#options2"), 'Skills', 'OPEN sk')
+                await createLink(document.querySelector("#options2"), 'Other', 'OPEN o')
+                await createLink(document.querySelector("#options2"), 'Links', 'OPEN a')
+                await createLink(document.querySelector("#options2"), 'List Commands', 'LIST')
+                await createLink(document.querySelector("#options2"), 'Full Resume', 'RUN cv')
+            }
+
+            function handleInput(input) {
+                console.log(input)
+                commandHtml.value = ''
+                switch(input.toLowerCase()) {
+                case 'list':
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(commandsJSON);
+                    break;
+                case "open wh":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(workHistoryJSON);
+                    break;
+                case "open wp":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(workProjectsJSON);
+                    break;
+                case "open pp":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(personalProjectsJSON);
+                    break;
+                case "open edu":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(educationJSON);
+                    break;
+                case "open sk":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(skillsJSON);
+                    break;
+                case "open o":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(otherJSON);
+                    break;
+                case "open a":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(linksJSON);
+                    break;
+                case "mon ,c":
+                    MONC = true;
+                    if (MONC) acceptCommand(input);
+                    break;
+                case "mon ,i":
+                    if (MONC) acceptCommand(input);
+                    commandHtml.classList.remove("nomoni");
+                    break;
+                case "mon ,o":
+                    if (MONC) acceptCommand(input);
+                    MONO = true;
+                    break;
+                case "nomon ,c":
+                    MONC = false;
+                    if (MONC) acceptCommand(input);
+                    break;
+                case "nomon ,i":
+                    if (MONC) acceptCommand(input);
+                    commandHtml.classList.add("nomoni");
+                    break;
+                case "nomon ,o":
+                    if (MONC) acceptCommand(input);
+                    MONO = false;
+                    break;
+                case "catalog":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(resumeContentJSON);
+                    break;
+                }
+            }
+
+            async function acceptCommand(command) {
+                let commandDiv = document.createElement("div")
+                commandDiv.id = `content${++contentCount}`
+                commandDiv.classList.add('margin-top')
+                contentHtml.appendChild(commandDiv)
+                justDisplay(commandDiv, '] ' + command)
+            }
+
+            async function showResumeContent(contentArr) {
+                for (const ele of contentArr) {
+                    let cjDiv = document.createElement("div")
+                    cjDiv.id = `content${++contentCount}`
+                    cjDiv.classList.add('margin-top')
+                    cjDiv.classList.add('padding-left')
+                    contentHtml.appendChild(cjDiv)
+                    if (ele.charAt(0) === '<' && ele.charAt(1) === 'a' && ele.charAt(2) === '>') {
+                        let link = document.createElement("a")
+                        link.href = ele.substring(3, ele.indexOf("<a>", 3))
+                        link.id = `content${++contentCount}`
+                        cjDiv.appendChild(link)
+                        await depositText(link, ele.substring(ele.indexOf("<a>", 3) + 3))
+                    } else {
+                        await depositText(cjDiv, ele)
+                    }
+                }
+            }
+
+            async function depositText(location, text) {
+                let count = 0
+                while (count < text.length) {
+                    location.innerHTML += text.charAt(count)
+                    count++
+                    contentHtml.scrollTop = contentHtml.scrollHeight
+                    await delay(computerSpeed)
+                }
+            }
+
+            async function createLink(location, text, command) {
+                let newLink = document.createElement('a')
+                newLink.classList.add('terminal-style')
+                newLink.href = `javascript:fillInput("${command}")`
+                let newSpan = document.createElement('span')
+                newSpan.classList.add('padding-left')
+                newSpan.appendChild(newLink)
+                location.appendChild(newSpan)
+                await depositText(newLink, text)
+            }
+
+            async function fillInput(text) {
+                let count = 0
+                while (count < text.length) {
+                    commandHtml.value += text.charAt(count)
+                    count++
+                    await delay(inputSpeed)
+                }
+                await delay(75)
+                handleInput(commandHtml.value)
+            }
+
+            async function justDisplay(location, text) {
+                location.innerHTML = text
+            }
+        </script>
+    </head>
+
+    <body class="computer-bg">
+    	<div id="main-terminal" class="terminal-window-ht terminal-window-wd terminal-style">
+            <div id="header" class="text-center">
+                <div id="th0"> </div>
+                <div id="th1"> </div>
+                <div class="margin-top" id="th2"> </div>
+                <div class="margin-top" id="th3"> </div>
+            </div>
+            <div class="padding-left margin-top content-scroll" id="content">
+
+            </div>
+            <div class="padding-left margin-top" id="input">
+                <span id="entryPrompt"></span>
+                <input type="text" class="terminal-style" id="commandBox"></input>
+            </div>
+            <div class="padding-left margin-top" id="options1">
+
+            </div>
+            <div class="padding-left margin-top" id="options2">
+
+            </div>
+            <div class="padding-left margin-top" id="options3">
+
+            </div>
+            <div class="padding-left margin-top" id="options4">
+
+            </div>
+    	</div>
+    </body>
+    </html>
