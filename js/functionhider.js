@@ -9,6 +9,13 @@ function delay(ms) {
     return new Promise(resolve => { setTimeout(resolve, ms) })
 }
 
-function generateHeaderContent() {
-    
+function eleCreator(ele, id, cssClasses) {
+    let newEle = document.createElement(ele)
+    newEle.id = id
+    if (typeof cssClasses === 'string' && cssClasses != undefined) {
+        cssClasses.split(' ')
+            .forEach(cName => newEle.classList.add(cName))
+    }
+
+    return newEle
 }

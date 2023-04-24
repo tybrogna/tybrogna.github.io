@@ -1,259 +1,400 @@
 <!DOCTYPE html>
 <html>
-    <head>
+	<head>
         <title>Tyler Brogna</title>
         <link rel="stylesheet" href="css/bootstrap.css">
-        <style>
-            .svg-wide {
-                height: 100%;
-            }
-            .tb-row-top-margin {
-              margin-bottom: 1em;
-            }
-        </style>
+        <link rel="stylesheet" href="css/resume.css">
         <script src="js/bootstrap.js"></script>
+        <script src="js/functionhider.js"></script>
+        <script src="data/content.js"></script>
+        <style>
+            @font-face {
+                font-family: "C64Pro";
+                src: url(font/C64_Pro-STYLE.eot);
+                src: url(font/C64_Pro-STYLE.woff) format("woff");
+                src: url(font/C64_Pro-STYLE.otf) format("opentype");
+            }
+
+            @font-face {
+                font-family: "PrintChar21";
+                src: url(font/PrintChar21.woff2) format("woff2");
+            }
+
+            .computer-bg {
+                background: #686868;
+            }
+
+            @media screen and (max-width: 999px) {
+                .terminal-window-ht {
+                    position: fixed;
+                    width: 100%;
+                }
+            }
+
+            @media screen and (min-width: 1000px) {
+                .terminal-window-ht {
+                  position: fixed;
+                  left: 12%;
+                  width: 76%;
+                }
+            }
+
+            @media screen and (max-height: 825px) {
+                .terminal-window-ht {
+                    height: 100%;
+                }
+
+                .content-scroll {
+                    overflow-y: scroll;
+                    scrollbar-width: none;
+                    max-height: 66%;
+                }
+            }
+
+            @media screen and (min-height: 826px) and (max-height: 1200px) {
+                .terminal-window-ht {
+                    top: 12%;
+                    bottom: 12%;
+                }
+
+                .content-scroll {
+                    overflow-y: scroll;
+                    scrollbar-width: none;
+                    max-height: 58%;
+                }
+            }
+
+            @media screen and (min-height: 1201px) {
+                .terminal-window-ht {
+                    top: 12%;
+                    bottom: 12%;
+                }
+
+                .content-scroll {
+                    overflow-y: scroll;
+                    scrollbar-width: none;
+                    max-height: 70%;
+                }
+            }
+
+            .terminal-style {
+                font-family: 'PrintChar21';
+                background: #010101;
+                color: #1fc742;
+            }
+
+            .ff-content-scroll {
+                scrollbar-width: none;
+            }
+
+            .wk-content-scroll::-webkit-scrollbar {
+                width: 0 !important;
+            }
+
+            .margin-top {
+                margin-top: 15px;
+            }
+
+            .padding-left {
+                padding-left: 1em;
+            }
+
+            input {
+                border-top-style: hidden;
+                border-right-style: hidden;
+                border-left-style: hidden;
+                border-bottom-style: hidden;
+                outline: none;
+                caret-shape: block;
+            }
+
+            .nomoni {
+                color: transparent;
+            }
+
+        </style>
+
+        <script>
+            let computerSpeed = 1
+            let inputSpeed = 45
+            let contentCount = 0
+            let commandHtml, contentHtml
+            const isMobile = checkMobile()
+            const isWebkit = !navigator.userAgent.match(/firefox|fxios/i)
+
+            let MONC = true
+            let MONI = true
+            let MONO = true
+
+            let resizeWindow = function(event) {
+                contentHtml.scrollTop = contentHtml.scrollHeight
+            }
+
+            window.onload = initSite
+            window.onresize = resizeWindow
+            
+            function applyStyles() {
+                if (isWebkit) contentHtml.classList.add("wk-content-scroll");
+                else contentHtml.classList.add("ff-content-scroll");
+            }
+
+            async function initSite() {
+                commandHtml = document.querySelector("#commandBox")
+                contentHtml = document.querySelector("#content")
+                resizeWindow()
+
+                commandHtml.value = ''
+                await applyStyles()
+                await delay(500)
+                await justDisplay(document.querySelector("#th0"), filedata['header'][0])
+                await delay(500)
+                await justDisplay(document.querySelector("#th1"), filedata['header'][1])
+                await delay(200)
+                await justDisplay(document.querySelector("#th2"), filedata['header'][2])
+                await delay(100)
+                await justDisplay(document.querySelector("#th3"), filedata['header'][3])
+                await justDisplay(document.querySelector("#entryPrompt"), "]")
+
+                commandHtml.addEventListener("keypress", function(press) {
+                    if (press.key === "Enter") {
+                        handleInput(commandHtml.value)
+                    }
+                })
+
+                await delay(250)
+                await createLink(document.querySelector("#options1"), 'Work History', `RUN OPEN ${Object.keys(filenames)[0]}`)
+                await createLink(document.querySelector("#options1"), 'Work Projects', `RUN OPEN ${Object.keys(filenames)[1]}`)
+                await createLink(document.querySelector("#options1"), 'Personal Projects', `RUN OPEN ${Object.keys(filenames)[2]}`)
+                await createLink(document.querySelector("#options1"), 'Education', `RUN OPEN ${Object.keys(filenames)[3]}`)
+                await createLink(document.querySelector("#options2"), 'Skills', `RUN OPEN ${Object.keys(filenames)[4]}`)
+                await createLink(document.querySelector("#options2"), 'Other', `RUN OPEN ${Object.keys(filenames)[5]}`)
+                await createLink(document.querySelector("#options2"), 'Links', `RUN OPEN ${Object.keys(filenames)[6]}`)
+                await createLink(document.querySelector("#options2"), 'List Commands', 'LIST')
+                await createLink(document.querySelector("#options2"), 'Full Resume', 'RUN WEB cv')
+            }
+
+            function handleInput(input) {
+                console.log(input)
+                commandHtml.value = ''
+
+                let commandTokens = input.split(' ')
+                let cmdInit = commandTokens[0]
+                if (cmdInit == undefined) {
+                    if (MONC) acceptCommand(cmdInit);
+                    if (MONO) rejectCommand("0001 GS/OS");
+                    return;
+                }
+
+                switch(cmdInit.toLowerCase()) {
+                case 'list':
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(filedata['commands']);
+                    break;
+                case 'run':
+                    let cmdProgram = commandTokens[1]
+                    if (cmdProgram == undefined) {
+                        if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram);
+                        if (MONO) rejectCommand("0046 GS/OS");
+                        return;
+                    }
+
+                    if (cmdProgram.toLowerCase() == 'open') {
+                        let cmdFilename = commandTokens[2]
+                        if (cmdFilename == undefined) {
+                            if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram)
+                            if (MONO) rejectCommand("0046 GS/OS")
+                            return;
+                        }
+
+                        if (filenames.hasOwnProperty(cmdFilename.toLowerCase())) {
+                            if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram + ' ' + cmdFilename)
+                            if (MONO) showResumeContent(filedata[filenames[cmdFilename]])
+                        }
+                    } else if (cmdProgram.toLowerCase() == 'web') {
+                        let cmdFilename = commandTokens[2]
+                        if (cmdFilename == undefined) {
+                            if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram)
+                            if (MONO) rejectCommand("0046 GS/OS")
+                            return;
+                        }
+
+                        if (cmdFilename.toLowerCase() == 'cv') {
+                            if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram + ' ' + cmdFilename)
+                            delay(200)
+                            open("fullresume.html")
+                        }
+                    }
+
+                    break;
+                case "mon ,c":
+                    MONC = true;
+                    if (MONC) acceptCommand(input);
+                    break;
+                case "mon ,i":
+                    if (MONC) acceptCommand(input);
+                    commandHtml.classList.remove("nomoni");
+                    break;
+                case "mon ,o":
+                    if (MONC) acceptCommand(input);
+                    MONO = true;
+                    break;
+                case "nomon ,c":
+                    MONC = false;
+                    if (MONC) acceptCommand(input);
+                    break;
+                case "nomon ,i":
+                    if (MONC) acceptCommand(input);
+                    commandHtml.classList.add("nomoni");
+                    break;
+                case "nomon ,o":
+                    if (MONC) acceptCommand(input);
+                    MONO = false;
+                    break;
+                case "catalog":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(resumeContentJSON);
+                    break;
+                case "list":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(commandsJSON);
+                case "rename":
+                    let newold = commandTokens[1].split(',')
+                    if (newold[1] == undefined) {
+                        contentHtml.scrollTop = contentHtml.scrollHeight
+                        if (MONO) rejectCommand("005B GS/OS");
+                    }
+                    if (updateLink(newold[0], newold[1])) {
+                        if (MONC) acceptCommand(input);
+                        if (MONO) rejectCommand("RENAMED TO " + newold[1]);
+                    }
+                    break;
+                default:
+                    if (MONC) acceptCommand(input);
+                    if (MONO) rejectCommand("0001 GS/OS");
+                }
+            }
+
+            async function acceptCommand(command) {
+                let commandDiv = eleCreator('div', `content${++contentCount}`, 'margin-top')
+                contentHtml.appendChild(commandDiv)
+                justDisplay(commandDiv, '] ' + command)
+            }
+
+            async function rejectCommand(command) {
+                let commandDiv = eleCreator('div', `content${++contentCount}`, 'margin-top padding-left')
+                contentHtml.appendChild(commandDiv)
+                justDisplay(commandDiv, command)
+            }
+
+
+            async function showResumeContent(contentArr) {
+                for (const ele of contentArr) {
+                    let cjDiv = eleCreator('div', `content${++contentCount}`, 'margin-top padding-left')
+                    contentHtml.appendChild(cjDiv)
+                    if (ele.charAt(0) === '<' && ele.charAt(1) === 'a' && ele.charAt(2) === '>') {
+                        let link = eleCreator('a', `content${++contentCount}`)
+                        link.href = ele.substring(3, ele.indexOf("<a>", 3))
+                        cjDiv.appendChild(link)
+                        await depositText(link, ele.substring(ele.indexOf("<a>", 3) + 3))
+                    } else {
+                        await depositText(cjDiv, ele)
+                    }
+                }
+            }
+
+            async function depositText(location, text) {
+                let count = 0
+                while (count < text.length) {
+                    location.innerHTML += text.charAt(count)
+                    count++
+                    contentHtml.scrollTop = contentHtml.scrollHeight
+                    await delay(computerSpeed)
+                }
+            }
+
+            async function createLink(location, text, command) {
+                let newLink = document.createElement('a')
+                newLink.classList.add('terminal-style')
+                newLink.href = `javascript:fillInput("${command}")`
+                let newSpan = document.createElement('span')
+                newSpan.classList.add('padding-left')
+                newSpan.appendChild(newLink)
+                location.appendChild(newSpan)
+                await depositText(newLink, text)
+            }
+
+            function updateLink(oldFilename, newFilename) {
+                if (newFilename.length < 1 || newFilename.length > 15) {
+                    if (MONO) rejectCommand("005B GS/OS");
+                    return false;
+                }
+
+                if (oldFilename == newFilename) {
+                    if (MONO) rejectCommand("0047 GS/OS");
+                    return false;
+                }
+
+                if (Object.keys(filenames).includes(newFilename)) {
+                    if (MONO) rejectCommand("005B GS/OS");
+                    return false;
+                }
+
+                if (!isNaN(parseInt(newFilename.charAt(0)))) {
+                    if (MONO) rejectCommand("005B GS/OS");
+                    return false;
+                }
+
+                let oldLink = document.querySelector('a[href*="RUN OPEN ' + oldFilename + '"]')
+                if (Object.keys(filenames).includes(oldFilename) && oldLink != null) {
+                    filenames[newFilename] = filenames[oldFilename]
+                    delete filenames[oldFilename]
+                    oldLink.href = `javascript:fillInput("RUN OPEN ${newFilename}")`
+                    return true;
+                }
+
+                if (MONO) rejectCommand('0001 GS/OS')
+                return false;
+            }
+
+            async function fillInput(text) {
+                let count = 0
+                while (count < text.length) {
+                    commandHtml.value += text.charAt(count)
+                    count++
+                    await delay(inputSpeed)
+                }
+                await delay(75)
+                handleInput(commandHtml.value)
+            }
+
+            async function justDisplay(location, text) {
+                location.innerHTML = text
+                contentHtml.scrollTop = contentHtml.scrollHeight
+            }
+        </script>
     </head>
 
-    <body class="bg-secondary">
-        <div class="container-fluid bg-dark text-light">
-            <br />
-            <div class="row justify-content-center">
-                <div class="col-sm-1">
-                    <img class="img-fluid" src="img/me.jpg" />
-                </div>
+    <body class="computer-bg">
+    	<div id="main-terminal" class="terminal-window-ht terminal-window-wd terminal-style">
+            <div id="header" class="text-center">
+                <div id="th0"> </div>
+                <div id="th1"> </div>
+                <div class="margin-top" id="th2"> </div>
+                <div class="margin-top" id="th3"> </div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-6 text-center">
-                    <h1>Tyler Brogna</h1>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-4 text-center">
-                    <h4>Massachusetts, USA</h4>
-                </div>
-                <div class="col-4 text-center">
-                    <h4>tybrogna@gmail.com</h4>
-                </div>
-            </div>
-        </div>
-        <br />
-        <div class="container text-light text-center">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <p>As long as I can remember, I had always been fascinated by computers. One of my earliest memories is of slamming game cartridges into a long-antiquated Atari 2600. Video games were my first look into the world of programming and computers, and as I grew older, I was given opportunities to both play and learn all manner of electronic devices.</p>
-                    <p>Educated at RIT, I studied not just computer science, but also game design and user experience. I also gained further appreciation for how emergent stories are told through play.</p>
-                    <p>Always seeking something new, my current career applies my knowledge, working professionally on software development. Meanwhile, my interests take me into a variety of personally unknown places, like small electronics tinkering and martial arts.</p>
-                </div>
-            </div>
-        </div>
-        <br />
-        <div class="container text-light">
-            <div class="row">
-                <div class="col text-left bg-dark">
-                    <h3>Professional Work</h3>
-                </div>
-            </div>
-            <br>
-            <div class="row justify-content-start">
-                <div class="row justify-content-start">
-                    <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
-                        <h4>Accusoft</h4>
-                        <p>Software Engineer III <br> Jan 2018 - Present <br> Tampa Bay, FL.</p>
-
-                        <p>Previously Snowbound Software, acquired by Accusoft in Sep 2022. Worked on a team to maintain and expand functionality of a document processing API, used to convert document formats into raster and vector images.</p>
-                    </div>
-                    <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
-                        <h4>Conduent Legal and Compliance Services</h4>
-                        <p>Software Developer <br> Jul 2015 - Jun 2017 <br> Albany, NY.</p>
-                        <p>Created web apps with PHP for data compliation, for interal use. Created automated testing frameworks for a website using Selenium.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br />
-        <div class="container text-light">
-            <div class="row">
-                <div class="col text-left bg-dark">
-                    <h3>Professional Projects</h3>
-                </div>
-            </div>
-            <br>
-            <div class="row justify-content-start">
-                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
-                    <h4>Microsoft Excel Content Layout</h4>
-                    <p>Accusoft/Snowbound</p>
-                    <p>The largest, and in my opinion, most impressive I worked on at Snowbound Software. I was to create a system to lay out all content in a Microsoft Excel spreadsheet. Written in Java, this involved writing data structures and systems needed to make rendered images "look right," according to the Open Office XML Specifications. This didn't just include sheets and cells, but also headers/footers, image anchors, fonts, styles, text alignment and conditional formats.</p>
-                </div>
-                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
-                    <h4>DrawingML Charts for Microsoft Office Layout</h4>
-                    <p>Accusoft/Snowbound</p>
-                    <p>I was the sole engineer working to create a system to parse and lay out all content in Microsoft Office Charts. Created all systems and data structures to draw line, bar, area, circular, and combination plots. Included systems to display legends, titles, axis labels, and data labels. Written in Java.</p>
-                </div>
-                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
-                    <h4>DrawingML Charts for Microsoft Office Layout, With JFreeChart</h4>
-                    <p>Accusoft/Snowbound</p>
-                    <p>The latest project I handled at Accusoft; its charts again but with a twist. Information was gleaned from my previous charts work that things could not continue at the same speed and quality, so it was decided that a library would be used. JFreeChart was implemented to overtake the functions of all previous plots, but now handle 3D plots and more esoteric plots. The transition leveraged a lot of both my Microsoft Chart and Java knowledge.</p>
-                </div>
-                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
-                    <h4>Microsoft Excel Custom Number Formats</h4>
-                    <p>Accusoft/Snowbound</p>
-                    <p>The oldest of my projects at Snowbound Software, I was to create a system to parse and format Microsoft Excel custom number formats. Handled numbers, dates, and times to display the same as Excel. Works across multiple locales. Written in Java and C#.</p>
-
-                </div>
+            <div class="padding-left margin-top content-scroll" id="content">
 
             </div>
-        </div>
-        <br />
-        <div class="container text-light">
-            <div class="row">
-                <div class="col text-left bg-dark">
-                    <h3>Personal Projects</h3>
-                </div>
+            <div class="padding-left margin-top" id="input">
+                <span id="entryPrompt"></span>
+                <input type="text" class="terminal-style" id="commandBox"></input>
             </div>
-            <br>
-            <div class="row justify-content-start">
-                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
-                    <h4>Toom World</h4>
-                    <p>Designed and programmed a 3D video on a team of three in one month, part of a community game jam hosted on itch.io. Worked on game architecture, enemy AI, and character controller. Contributed to the game design and level design. Written in Godot with GDscript. <a class="text-light" href="https://tavoe.itch.io/toom-world">Play on itch.io.</a></p>
-                </div>
-                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
-                    <h4>Bingo Web App</h4>
-                    <p>Used Node.js, express.js, and SQLite3. Created for practice to learn server side web development. Site accepted user input and generated bingo cards.</p>
-                </div>
+            <div class="padding-left margin-top" id="options1">
+
             </div>
-        </div>
-        <br />
-        <div class="container text-light">
-            <div class="row">
-                <div class="col text-left bg-dark">
-                    <h3>Education</h3>
-                </div>
+            <div class="padding-left margin-top" id="options2">
+
             </div>
-            <br>
-            <div class="row justify-content-start">
-                <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
-                    <h4>Rochester Insitiute of Technology</h4>
-                    <p>Bachelor of Science in Game Design and Development <br> Minor in Digital Literature and Technology <br> Sep 2010 - May 2014</p>
-                </div>
-            </div>
-        </div>
-        <br />
-        <div class="container text-light">
-            <div class="row">
-                <div class="col text-left bg-dark">
-                    <h3>Skills, Languages, and Tools</h3>
-                </div>
-            </div>
-            <br>
-            <div class="row justify-content-start">
-                <div class="col-sm-2 border-start border-dark border-2">
-                    Java
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    C#
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    JavaScript
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    C++
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    GDScript
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    Python
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    SQLite3
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    Node.js
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    Git
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    JFreeChart
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    Unity 3D
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    Godot
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    IntelliJ
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    Visual Studio
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    VS Code
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    Maven
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    Teamcity
-                </div>
-                <div class="col-sm-2 border-start border-dark border-2">
-                    Microsoft Office
-                </div>
-            </div>
-       </div>
-       <br />
-       <br />
-        <div class="container text-light">
-            <div class="row">
-                <div class="col text-left bg-dark">
-                    <h3>Other Experiences</h3>
-                </div>
-            </div>
-            <br />
-            <div class="row justify-content-start">
-                <div class="col-md-4 border-start border-dark border-2">
-                    Martial Artist
-                </div>
-                <div class="col-md-4 border-start border-dark border-2">
-                    Video Game Collector
-                </div>
-                <div class="col-md-4 border-start border-dark border-2">
-                    Downhill Skiier
-                </div>
-            </div>
-            <div class="row justify-content-start">
-                <div class="col-md-4 border-start border-dark border-2">
-                    Small Electronics Tinkerer
-                </div>
-                <div class="col-md-4 border-start border-dark border-2">
-                    Science Fiction/Fantasy Reader
-                </div>
-            </div>
-        </div>
-        <br />
-        <br />
-        <div class="container text-light">
-            <div class="row">
-                <div class="col text-left bg-dark">
-                    <h3>Links</h3>
-                </div>
-            </div>
-            <br>
-            <div class="row justify-content-around">
-                <div class="col-sm-2">
-                    <a href="https://www.linkedin.com/in/tyler-brogna-43468683/">
-                        <img class="img-fluid" src="img/li.png" />
-                    </a>
-                </div>
-                <div class="col-sm-2">
-                    <a href="Brogna, Tyler - Resume.pdf">
-                        <img class="img-fluid svg-wide" src="img/filedl.svg" />
-                    </a>
-                </div>
-            </div>
-        </div>
-        <br />
-        <br>
+        	</div>
     </body>
 </html>
