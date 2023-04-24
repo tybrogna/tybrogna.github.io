@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<head>
+    <head>
         <title>Tyler Brogna</title>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/resume.css">
@@ -134,8 +134,10 @@
             window.onresize = resizeWindow
             
             function applyStyles() {
-                if (isWebkit) contentHtml.classList.add("wk-content-scroll");
-                else contentHtml.classList.add("ff-content-scroll");
+                if (isWebkit)
+                    contentHtml.classList.add("wk-content-scroll");
+                else
+                    contentHtml.classList.add("ff-content-scroll");
             }
 
             async function initSite() {
@@ -162,14 +164,15 @@
                 })
 
                 await delay(250)
-                await createLink(document.querySelector("#options1"), 'Work History', `RUN OPEN ${Object.keys(filenames)[0]}`)
-                await createLink(document.querySelector("#options1"), 'Work Projects', `RUN OPEN ${Object.keys(filenames)[1]}`)
-                await createLink(document.querySelector("#options1"), 'Personal Projects', `RUN OPEN ${Object.keys(filenames)[2]}`)
-                await createLink(document.querySelector("#options1"), 'Education', `RUN OPEN ${Object.keys(filenames)[3]}`)
-                await createLink(document.querySelector("#options2"), 'Skills', `RUN OPEN ${Object.keys(filenames)[4]}`)
-                await createLink(document.querySelector("#options2"), 'Other', `RUN OPEN ${Object.keys(filenames)[5]}`)
-                await createLink(document.querySelector("#options2"), 'Links', `RUN OPEN ${Object.keys(filenames)[6]}`)
+                await createLink(document.querySelector("#options1"), 'Work History', `LOAD ${Object.keys(filenames)[0]}`)
+                await createLink(document.querySelector("#options1"), 'Work Projects', `LOAD ${Object.keys(filenames)[1]}`)
+                await createLink(document.querySelector("#options1"), 'Personal Projects', `LOAD ${Object.keys(filenames)[2]}`)
+                await createLink(document.querySelector("#options1"), 'Education', `LOAD ${Object.keys(filenames)[3]}`)
+                await createLink(document.querySelector("#options2"), 'Skills', `LOAD ${Object.keys(filenames)[4]}`)
+                await createLink(document.querySelector("#options2"), 'Other', `LOAD ${Object.keys(filenames)[5]}`)
+                await createLink(document.querySelector("#options2"), 'Links', `LOAD ${Object.keys(filenames)[6]}`)
                 await createLink(document.querySelector("#options2"), 'List Commands', 'LIST')
+                await createLink(document.querySelector("#options2"), 'Credits', 'CREDITS')
                 await createLink(document.querySelector("#options2"), 'Full Resume', 'RUN WEB cv')
             }
 
@@ -190,41 +193,41 @@
                     if (MONC) acceptCommand(input);
                     if (MONO) showResumeContent(filedata['commands']);
                     break;
-                case 'run':
-                    let cmdProgram = commandTokens[1]
-                    if (cmdProgram == undefined) {
-                        if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram);
-                        if (MONO) rejectCommand("0046 GS/OS");
+                case 'load':
+                    let cmdFilename = commandTokens[1]
+                    if (cmdFilename == undefined) {
+                        if (MONC) acceptCommand(cmdInit + ' ' + cmdFilename)
+                        if (MONO) rejectCommand("0046 GS/OS")
                         return;
                     }
 
-                    if (cmdProgram.toLowerCase() == 'open') {
+                    if (filenames.hasOwnProperty(cmdFilename.toLowerCase())) {
+                        if (MONC) acceptCommand(cmdInit + ' ' + cmdFilename)
+                        if (MONO) showResumeContent(filedata[filenames[cmdFilename]])
+                    }
+                    break;
+                case 'run':
+                    let cmdProgram = commandTokens[1]
+                    if (cmdProgram == undefined) {
+                        if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram)
+                        if (MONO) rejectCommand("0046 GS/OS")
+                        return;
+                    }
+
+                    if (cmdProgram.toLowerCase() == 'web') {
                         let cmdFilename = commandTokens[2]
                         if (cmdFilename == undefined) {
                             if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram)
                             if (MONO) rejectCommand("0046 GS/OS")
                             return;
                         }
-
-                        if (filenames.hasOwnProperty(cmdFilename.toLowerCase())) {
-                            if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram + ' ' + cmdFilename)
-                            if (MONO) showResumeContent(filedata[filenames[cmdFilename]])
-                        }
-                    } else if (cmdProgram.toLowerCase() == 'web') {
-                        let cmdFilename = commandTokens[2]
-                        if (cmdFilename == undefined) {
-                            if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram)
-                            if (MONO) rejectCommand("0046 GS/OS")
-                            return;
-                        }
-
+                        
                         if (cmdFilename.toLowerCase() == 'cv') {
                             if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram + ' ' + cmdFilename)
                             delay(200)
                             open("fullresume.html")
                         }
                     }
-
                     break;
                 case "mon ,c":
                     MONC = true;
@@ -252,21 +255,26 @@
                     break;
                 case "catalog":
                     if (MONC) acceptCommand(input);
-                    if (MONO) showResumeContent(resumeContentJSON);
+                    if (MONO) showResumeContent(filedata['resumeContent']);
                     break;
                 case "list":
                     if (MONC) acceptCommand(input);
-                    if (MONO) showResumeContent(commandsJSON);
+                    if (MONO) showResumeContent(filedata['commands']);
+                    break;
                 case "rename":
                     let newold = commandTokens[1].split(',')
                     if (newold[1] == undefined) {
-                        contentHtml.scrollTop = contentHtml.scrollHeight
                         if (MONO) rejectCommand("005B GS/OS");
+                        return;
                     }
                     if (updateLink(newold[0], newold[1])) {
                         if (MONC) acceptCommand(input);
                         if (MONO) rejectCommand("RENAMED TO " + newold[1]);
                     }
+                    break;
+                case "credits":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(filedata['credits']);
                     break;
                 default:
                     if (MONC) acceptCommand(input);
@@ -344,11 +352,11 @@
                     return false;
                 }
 
-                let oldLink = document.querySelector('a[href*="RUN OPEN ' + oldFilename + '"]')
+                let oldLink = document.querySelector('a[href*="LOAD ' + oldFilename + '"]')
                 if (Object.keys(filenames).includes(oldFilename) && oldLink != null) {
                     filenames[newFilename] = filenames[oldFilename]
                     delete filenames[oldFilename]
-                    oldLink.href = `javascript:fillInput("RUN OPEN ${newFilename}")`
+                    oldLink.href = `javascript:fillInput("LOAD ${newFilename}")`
                     return true;
                 }
 
@@ -359,8 +367,7 @@
             async function fillInput(text) {
                 let count = 0
                 while (count < text.length) {
-                    commandHtml.value += text.charAt(count)
-                    count++
+                    commandHtml.value += text.charAt(count++)
                     await delay(inputSpeed)
                 }
                 await delay(75)
@@ -395,6 +402,5 @@
             <div class="padding-left margin-top" id="options2">
 
             </div>
-        	</div>
     </body>
 </html>

@@ -79,5 +79,9 @@ const filedata = {
     "links" : [
         '<a>https://www.linkedin.com/in/tyler-brogna-43468683/<a>LinkedIn',
         '<a>Brogna, Tyler - Resume.pdf<a>Download Paper Resume',
+        ],
+    "credits" : [
+        '<a>https://www.kreativekorp.com/software/fonts/apple2/<a>KreativeKorp Ultimate Apple II Font, used under KREATIVE SOFTWARE RELAY FONTS FREE USE LICENSE version 1.2f',
+        '<a>https://getbootstrap.com/<a>Bootstrap'
         ]
 }
