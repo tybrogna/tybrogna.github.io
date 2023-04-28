@@ -1,20 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Tyler Brogna</title>
+        <title>TYLER BROGNA</title>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/resume.css">
+        <link rel="icon" type="image/x-icon" href="img/favicon.ico">
         <script src="js/bootstrap.js"></script>
         <script src="js/functionhider.js"></script>
         <script src="data/content.js"></script>
         <style>
-            @font-face {
-                font-family: "C64Pro";
-                src: url(font/C64_Pro-STYLE.eot);
-                src: url(font/C64_Pro-STYLE.woff) format("woff");
-                src: url(font/C64_Pro-STYLE.otf) format("opentype");
-            }
-
             @font-face {
                 font-family: "PrintChar21";
                 src: url(font/PrintChar21.woff2) format("woff2");
@@ -47,7 +41,7 @@
                 .content-scroll {
                     overflow-y: scroll;
                     scrollbar-width: none;
-                    max-height: 66%;
+                    max-height: 50%;
                 }
             }
 
@@ -125,28 +119,64 @@
             let MONC = true
             let MONI = true
             let MONO = true
-
-            let resizeWindow = function(event) {
-                contentHtml.scrollTop = contentHtml.scrollHeight
-            }
+            let lockLinks = false
+            let lastTenCommands = []
+            let lastTenCommandsPtr = 0
 
             window.onload = initSite
-            window.onresize = resizeWindow
-            
-            function applyStyles() {
-                if (isWebkit)
-                    contentHtml.classList.add("wk-content-scroll");
-                else
-                    contentHtml.classList.add("ff-content-scroll");
+            window.onresize = function(event) {
+                contentHtml.scrollTop = contentHtml.scrollHeight
             }
 
             async function initSite() {
                 commandHtml = document.querySelector("#commandBox")
                 contentHtml = document.querySelector("#content")
-                resizeWindow()
-
                 commandHtml.value = ''
-                await applyStyles()
+
+                if (isWebkit) {
+                    contentHtml.classList.add("wk-content-scroll");
+                } else {
+                    contentHtml.classList.add("ff-content-scroll");
+                }
+
+                window.addEventListener("auxclick", function(clickAt) {
+                    clickAt.preventDefault()
+                    document.elementFromPoint(clickAt.clientX, clickAt.clientY).click()
+                });
+
+                commandHtml.addEventListener("keydown", function(press) {
+                    if (press.key === "Enter") {
+                        handleInput(commandHtml.value)
+                    }
+
+                    //terminal history functionality. only "saves" the last 10 commands
+                    if (press.key === "ArrowUp") {
+                        press.preventDefault()
+                        if (lastTenCommandsPtr >= lastTenCommands.length)
+                            lastTenCommandsPtr = lastTenCommands.length - 1
+                        commandHtml.value = lastTenCommands[lastTenCommandsPtr++]
+                    }
+
+                    if (press.key === "ArrowDown") {
+                        press.preventDefault()
+                        if (lastTenCommandsPtr <= 0) {
+                            lastTenCommandsPtr = 0
+                            commandHtml.value = ''
+                         } else if (lastTenCommandsPtr >= lastTenCommands.length) {
+                            lastTenCommandsPtr = lastTenCommands.length - 1
+                            commandHtml.value = lastTenCommands[--lastTenCommandsPtr]
+                         } else {
+                            commandHtml.value = lastTenCommands[--lastTenCommandsPtr]
+                        }
+                    }
+                });
+
+                await generateHeader()
+                await generateAllLinks()
+                commandHtml.focus()
+            }
+
+            async function generateHeader() {
                 await delay(500)
                 await justDisplay(document.querySelector("#th0"), filedata['header'][0])
                 await delay(500)
@@ -156,16 +186,12 @@
                 await delay(100)
                 await justDisplay(document.querySelector("#th3"), filedata['header'][3])
                 await justDisplay(document.querySelector("#entryPrompt"), "]")
+            }
 
-                commandHtml.addEventListener("keypress", function(press) {
-                    if (press.key === "Enter") {
-                        handleInput(commandHtml.value)
-                    }
-                })
-
+            async function generateAllLinks() {
                 await delay(250)
                 await createLink(document.querySelector("#options1"), 'Work History', `LOAD ${Object.keys(filenames)[0]}`)
-                await createLink(document.querySelector("#options1"), 'Work Projects', `LOAD ${Object.keys(filenames)[1]}`)
+                await createLink(document.querySelector("#options1"), 'Professional Projects', `LOAD ${Object.keys(filenames)[1]}`)
                 await createLink(document.querySelector("#options1"), 'Personal Projects', `LOAD ${Object.keys(filenames)[2]}`)
                 await createLink(document.querySelector("#options1"), 'Education', `LOAD ${Object.keys(filenames)[3]}`)
                 await createLink(document.querySelector("#options2"), 'Skills', `LOAD ${Object.keys(filenames)[4]}`)
@@ -173,12 +199,13 @@
                 await createLink(document.querySelector("#options2"), 'Links', `LOAD ${Object.keys(filenames)[6]}`)
                 await createLink(document.querySelector("#options2"), 'List Commands', 'LIST')
                 await createLink(document.querySelector("#options2"), 'Credits', 'CREDITS')
-                await createLink(document.querySelector("#options2"), 'Full Resume', 'RUN WEB cv')
+                await createLink(document.querySelector("#options2"), 'Full Resume HTML', 'RUN WEB cv')
+                await createLink(document.querySelector("#options2"), 'Full Resume PDF', 'RUN SAVE cv')
             }
 
             function handleInput(input) {
-                console.log(input)
                 commandHtml.value = ''
+                lastTenCommands.unshift(input)
 
                 let commandTokens = input.split(' ')
                 let cmdInit = commandTokens[0]
@@ -227,7 +254,21 @@
                             delay(200)
                             open("fullresume.html")
                         }
+                    } else if (cmdProgram.toLowerCase() == 'save') {
+                        let cmdFilename = commandTokens[2]
+                        if (cmdFilename == undefined) {
+                            if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram)
+                            if (MONO) rejectCommand("0046 GS/OS")
+                            return;
+                        }
+
+                        if (cmdFilename.toLowerCase() == 'cv') {
+                            if (MONC) acceptCommand(cmdInit + ' ' + cmdProgram + ' ' + cmdFilename)
+                            delay(200)
+                            open("Brogna, Tyler - Resume.pdf")
+                        }
                     }
+                    lockLinks = false
                     break;
                 case "mon ,c":
                     MONC = true;
@@ -280,6 +321,8 @@
                     if (MONC) acceptCommand(input);
                     if (MONO) rejectCommand("0001 GS/OS");
                 }
+
+                commandHtml.focus()
             }
 
             async function acceptCommand(command) {
@@ -292,10 +335,11 @@
                 let commandDiv = eleCreator('div', `content${++contentCount}`, 'margin-top padding-left')
                 contentHtml.appendChild(commandDiv)
                 justDisplay(commandDiv, command)
+                if (lockLinks)
+                    lockLinks = false
             }
 
-
-            async function showResumeContent(contentArr) {
+            async function showResumeContent(contentArr) {                
                 for (const ele of contentArr) {
                     let cjDiv = eleCreator('div', `content${++contentCount}`, 'margin-top padding-left')
                     contentHtml.appendChild(cjDiv)
@@ -308,6 +352,9 @@
                         await depositText(cjDiv, ele)
                     }
                 }
+
+                if (lockLinks)
+                    lockLinks = false
             }
 
             async function depositText(location, text) {
@@ -323,7 +370,7 @@
             async function createLink(location, text, command) {
                 let newLink = document.createElement('a')
                 newLink.classList.add('terminal-style')
-                newLink.href = `javascript:fillInput("${command}")`
+                newLink.href = `javascript:typeInput("${command}")`
                 let newSpan = document.createElement('span')
                 newSpan.classList.add('padding-left')
                 newSpan.appendChild(newLink)
@@ -356,7 +403,7 @@
                 if (Object.keys(filenames).includes(oldFilename) && oldLink != null) {
                     filenames[newFilename] = filenames[oldFilename]
                     delete filenames[oldFilename]
-                    oldLink.href = `javascript:fillInput("LOAD ${newFilename}")`
+                    oldLink.href = `javascript:typeInput("LOAD ${newFilename}")`
                     return true;
                 }
 
@@ -364,7 +411,9 @@
                 return false;
             }
 
-            async function fillInput(text) {
+            async function typeInput(text) {
+                if (lockLinks) return;
+                lockLinks = true
                 let count = 0
                 while (count < text.length) {
                     commandHtml.value += text.charAt(count++)

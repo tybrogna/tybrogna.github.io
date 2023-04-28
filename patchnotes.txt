@@ -1,0 +1,22 @@
+28 April 2023
+	"charts again" was removed
+	toom world team size 3 -> 4
+	auto focus input field when page loads
+	cant mess up links by rapidly clicking on multiple
+	middle click runs commands instead of opening tabs
+	added last command functionality
+	override default up and down arrow behavior
+	work projects -> professional projects
+	works on resolutions as low as 800*600 (lower untested)
+	work projects changed slightly
+	added github link to terminal links
+	added github link to full resume
+	added "full resume pdf" link to terminal page
+	changed "full resume" to "full resume html" to terminal page
+	added "PDF resume" and "HTML resume" to links
+	OWNERSHIP OF TYLER BROGNA -> DESIGNED BY TYLER BROGNA
+	changed picture on full resume so i look less ugly
+		secret picture on mouseover
+	deleted extra fonts and images
+	added favicon
+	updated README (i really dont care about the README)

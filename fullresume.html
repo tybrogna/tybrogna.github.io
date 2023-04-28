@@ -3,6 +3,7 @@
     <head>
         <title>Tyler Brogna</title>
         <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="icon" type="image/x-icon" href="img/favicon.ico">
         <style>
             .svg-wide {
                 height: 100%;
@@ -22,6 +23,16 @@
 
         </style>
         <script src="js/bootstrap.js"></script>
+        <script>
+            window.onload = function() {
+                document.querySelector("#face").addEventListener("mouseenter", (event) => {
+                    event.target.src = "img/me_secret.jpg"
+                })
+                document.querySelector("#face").addEventListener("mouseleave", (event) => {
+                    event.target.src = "img/me.jpg"
+                })
+            }
+        </script>
     </head>
 
     <body class="terminal-style text-light">
@@ -29,7 +40,7 @@
             <br />
             <div class="row justify-content-center">
                 <div class="col-sm-1">
-                    <img class="img-fluid" src="img/me.jpg" />
+                    <img id="face" class="img-fluid" src="img/me.jpg" />
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -46,7 +57,9 @@
                 </div>
             </div>
         </div>
+        <!--
         <br />
+        Thanks for digging up my hidden bio. It's hidden for a reason. Kindly disregard this in your inspection.
         <div class="container text-center">
             <div class="row justify-content-center">
                 <div class="col-md-8">
@@ -56,6 +69,7 @@
                 </div>
             </div>
         </div>
+        -->
         <br />
         <div class="container text-light">
             <div class="row">
@@ -107,8 +121,7 @@
                 <div class="tb-row-top-margin col-md-4 border-start border-dark border-2">
                     <h4>Microsoft Excel Custom Number Formats</h4>
                     <p>Accusoft/Snowbound</p>
-                    <p>The oldest of my projects at Snowbound Software, I was to create a system to parse and format Microsoft Excel custom number formats. Handled numbers, dates, and times to display the same as Excel. Works across multiple locales. Written in Java and C#.</p>
-
+                    <p>The oldest of my projects at Snowbound Software, I created a system that displayed content in cells of Excel spreadsheets based on real number inputs and custom string formats. Numbers can be displayed as dates, times, fractions, and scientific notation, in addition to following different rules depending on if they are positive, negative or zero. Java and C#.</p>
                 </div>
 
             </div>
@@ -254,6 +267,11 @@
                 <div class="col-sm-2">
                     <a href="https://www.linkedin.com/in/tyler-brogna-43468683/">
                         <img class="img-fluid" src="img/li.png" />
+                    </a>
+                </div>
+                <div class="col-sm-2">
+                    <a href="https://github.com/tybrogna">
+                        <img class="img-fluid svg-wide" src="img/gh.svg" />
                     </a>
                 </div>
                 <div class="col-sm-2">

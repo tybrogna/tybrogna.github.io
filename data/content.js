@@ -16,7 +16,7 @@ const filedata = {
         "PORTFOLIO II",
         "TXT VERSION 3.3 &nbsp &nbsp SYSTEM MASTER",
         todayObj.toLocaleString('default', { month: 'long', day : 'numeric', year: 'numeric'}),
-        "OWNERSHIP OF TYLER BROGNA, 1992," + todayObj.toLocaleString('default', { year: 'numeric'})
+        "DESIGNED BY TYLER BROGNA, 1992," + todayObj.toLocaleString('default', { year: 'numeric'})
         ],
     "commands": [
         'CATALOG',
@@ -40,12 +40,14 @@ const filedata = {
         ],
     "workHistory": [
         "Accusoft",
-        "Software Engineer III | Jan 2018 - Present | Tampa Bay, FL.",
-        "Previously employed by Snowbound Sofware, acquired by Accusoft in Sep 2022. Worked on a team to maintain and expand functionality of a document processing API, used to convert document formats into raster and vector images.",
+        "Software Engineer III | Sep 2022 - Present | Tampa Bay, FL.",
+        "Accusoft acquired Snowbound Software in Sep 2022, and I accepted a job to continue working for them, in the same role. Additional responsibility was given toward test automation and maintaining a software pipeline.",
+        "Snowbound Software",
+        "Software Engineer | Jan 2018 - Sep 2022 | Waltham, MA.",
+        "Worked on a team to maintain and expand functionality of a document processing API, used to convert document formats into raster and vector images.",
         "Conduent Legal and Compliance Services",
         "Software Developer | Jul 2015 - Jun 2017 | Albany, NY.",
         "Created web apps with PHP for data compliation, for interal use. Created automated testing frameworks for a website using Selenium."
-
         ],
     "education": [
         "Rochester Institute of Technology",
@@ -58,17 +60,16 @@ const filedata = {
         "DrawingML Charts for MS Office | Accusoft/Snowbound | JAVA",
         "Created systems and data structures for charts in MS Office. Included line, bar, area, circular, and combination plots. Included legends, titles, axis labels, and data labels",
         "JFreeChart for MS Office Charts | Accusoft/Snowbound | JAVA",
-        "Charts again, but leveraging the power of JFreeChart. Used to quickly make 3D charts using systems and knowledge from previous chart implementation.",
+        "Used JFreeChart to expand the functionality of my other project, DrawingML charts for MS Office. Used to quickly make 3D charts using systems and knowledge from previous chart implementation.",
         "MS Excel Custom Number Formats | Accusoft/Snowbound | JAVA, C#",
-        "Number parsing and formatting system for MS Excel. Handled all real numbers, localized dates, localized times, fractions and scientific notation."
-
+        "Created a system to display content in cells of Excel spreadsheets based on a real number input and custom string format. Numbers can be displayed as dates, times, fractions, and scientific notation, in addition to following different rules depending on if they are positive, negative or zero."
         ],
     "personalProjects": [
         'TOOM WORLD',
-        'Designed and programmed a 3D video game in one month. Part of a community game jam on itch.io Team size: three. Written in Godot with GDscript.',
+        'Designed and programmed a 3D video game in one month. Part of a community game jam on itch.io Team size: four. Written in Godot with GDscript.',
         '<a>https://tavoe.itch.io/toom-world<a>Play on itch.io',
         'Bingo Web App',
-        'Wrote server and backend to learn. Used Node.js, express.js, SQLite3.'
+        'Wrote server and backend for fun and learning purposes. Used Node.js, express.js, SQLite3.'
         ],
     "skills": [
         "Java | C# | JavaScript | C++ | GDScript | Python | SQLite3 | Node.js | Git | JFreeChart | Unity 3D | Godot | IntelliJ | Visual Studio | VS Code | Maven | Teamcity | Microsoft Office"
@@ -77,8 +78,10 @@ const filedata = {
         "Martial Artist | Video Game Collector | Downhill Skiier | Small Electronics Tinkerer | Science Fiction/Fantasy Reader"
         ],
     "links" : [
+        '<a>Brogna, Tyler - Resume.pdf<a>PDF Resume',
+        '<a>./fullresume.html<a>HTML Resume',
+        '<a>https://github.com/tybrogna<a>Github',
         '<a>https://www.linkedin.com/in/tyler-brogna-43468683/<a>LinkedIn',
-        '<a>Brogna, Tyler - Resume.pdf<a>Download Paper Resume',
         ],
     "credits" : [
         '<a>https://www.kreativekorp.com/software/fonts/apple2/<a>KreativeKorp Ultimate Apple II Font, used under KREATIVE SOFTWARE RELAY FONTS FREE USE LICENSE version 1.2f',
