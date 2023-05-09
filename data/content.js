@@ -47,7 +47,7 @@ const filedata = {
         "Worked on a team to maintain and expand functionality of a document processing API, used to convert document formats into raster and vector images.",
         "Conduent Legal and Compliance Services",
         "Software Developer | Jul 2015 - Jun 2017 | Albany, NY.",
-        "Created web apps with PHP for data compliation, for interal use. Created automated testing frameworks for a website using Selenium."
+        "Created web apps with PHP for data compliation, for internal use. Created automated testing frameworks for a website using Selenium."
         ],
     "education": [
         "Rochester Institute of Technology",
@@ -56,7 +56,7 @@ const filedata = {
         ],
     "workProjects": [
         "MS Excel Content Layout | Accusoft/Snowbound | JAVA",
-        "Largest Project. Created a system to layout MS Excel Spreadsheet. Includes sheets, cells, headers, footers, image anchors, fonts, styles, alignment, and conditional formatting.",
+        "Largest Project. Created a system to layout MS Excel Spreadsheets. Includes sheets, cells, headers, footers, image anchors, fonts, styles, alignment, and conditional formatting.",
         "DrawingML Charts for MS Office | Accusoft/Snowbound | JAVA",
         "Created systems and data structures for charts in MS Office. Included line, bar, area, circular, and combination plots. Included legends, titles, axis labels, and data labels",
         "JFreeChart for MS Office Charts | Accusoft/Snowbound | JAVA",
