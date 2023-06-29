@@ -404,6 +404,10 @@
                     filenames[newFilename] = filenames[oldFilename]
                     delete filenames[oldFilename]
                     oldLink.href = `javascript:typeInput("LOAD ${newFilename}")`
+
+                    const idx = filedata['resumeContent'].indexOf(`[ ] ${oldFilename}`)
+                    filedata['resumeContent'][idx] = `[ ] ${newFilename}`
+
                     return true;
                 }
 
