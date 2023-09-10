@@ -223,7 +223,7 @@
                 case 'load':
                     let cmdFilename = commandTokens[1]
                     if (cmdFilename == undefined) {
-                        if (MONC) acceptCommand(cmdInit + ' ' + cmdFilename)
+                        if (MONC) acceptCommand(cmdInit)
                         if (MONO) rejectCommand("0046 GS/OS")
                         return;
                     }
@@ -231,6 +231,9 @@
                     if (filenames.hasOwnProperty(cmdFilename.toLowerCase())) {
                         if (MONC) acceptCommand(cmdInit + ' ' + cmdFilename)
                         if (MONO) showResumeContent(filedata[filenames[cmdFilename]])
+                    } else {
+                        if (MONC) acceptCommand(cmdInit)
+                        if (MONO) rejectCommand("0046 GS/OS")
                     }
                     break;
                 case 'run':

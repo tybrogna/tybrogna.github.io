@@ -47,12 +47,12 @@ const filedata = {
         "Worked on a team to maintain and expand functionality of a document processing API, used to convert document formats into raster and vector images.",
         "Conduent Legal and Compliance Services",
         "Software Developer | Jul 2015 - Jun 2017 | Albany, NY.",
-        "Created web apps with PHP for data compliation, for internal use. Created automated testing frameworks for a website using Selenium."
+        "Created web apps with PHP for data compilation, for internal use. Created automated testing frameworks for a website using Selenium. Wrote PL/SQL commands."
         ],
     "education": [
         "Rochester Institute of Technology",
         "Bachelor of Science in Game Design and Development | Minor in Digital Literature and Technology",
-        "Sep 2010 - May 2014"
+        "Graduated May 2014"
         ],
     "workProjects": [
         "MS Excel Content Layout | Accusoft/Snowbound | JAVA",
@@ -72,10 +72,10 @@ const filedata = {
         'Wrote server and backend for fun and learning purposes. Used Node.js, express.js, SQLite3.'
         ],
     "skills": [
-        "Java | C# | JavaScript | C++ | GDScript | Python | SQLite3 | Node.js | Git | JFreeChart | Unity 3D | Godot | IntelliJ | Visual Studio | VS Code | Maven | Teamcity | Microsoft Office"
+        "Java | C# | JavaScript | C++ | cmake | GDScript | Python | SQLite3 | Node.js | Git | JFreeChart | Unity 3D | Godot | IntelliJ | Visual Studio | VS Code | Maven | Teamcity | Microsoft Office"
         ],
     "other": [
-        "Martial Artist | Video Game Collector | Downhill Skiier | Small Electronics Tinkerer | Science Fiction/Fantasy Reader"
+        "Martial Artist | Video Game Collector | Downhill Skier | Small Electronics Tinkerer | Science Fiction/Fantasy Reader"
         ],
     "links" : [
         '<a>Brogna, Tyler - Resume.pdf<a>PDF Resume',

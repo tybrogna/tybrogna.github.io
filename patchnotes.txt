@@ -1,5 +1,18 @@
+10 September 2023
+	fullresume: added cmake to skills
+	interactive resume: added cmake to skills
+	fullresume: added PL/SQL to conduent
+	interactive reusme: added PL/SQL to conduent
+	removed `undefined` when trying to load no file
+	added `0046 GS/OS` error when loading a file that doesn't exist
+	typos on full resume in conduent section
+	typos on full resume in education section
+	typos on full resume in others section
+	education now only shows graduation date
+	
+
 28 April 2023
-	"charts again" was removed
+	removed "charts again"
 	toom world team size 3 -> 4
 	auto focus input field when page loads
 	cant mess up links by rapidly clicking on multiple
