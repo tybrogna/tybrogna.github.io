@@ -173,7 +173,7 @@
 
                 await generateHeader()
                 await generateAllLinks()
-                commandHtml.focus()
+                if (!isMobile) commandHtml.focus()
             }
 
             async function generateHeader() {
@@ -325,7 +325,7 @@
                     if (MONO) rejectCommand("0001 GS/OS");
                 }
 
-                commandHtml.focus()
+                if (!isMobile) commandHtml.focus()
             }
 
             async function acceptCommand(command) {
