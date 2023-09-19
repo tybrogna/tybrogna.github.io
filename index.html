@@ -123,9 +123,19 @@
             let lastTenCommands = []
             let lastTenCommandsPtr = 0
 
-            window.onload = initSite
             window.onresize = function(event) {
                 contentHtml.scrollTop = contentHtml.scrollHeight
+            }
+
+            window.onload = function() {
+                if (document.visibilityState == "hidden") {
+                    document.onvisibilitychange = function() {
+                        if (document.visibilityState == "visible") {
+                            document.onvisibilitychange = null
+                            initSite()
+                        }
+                    }
+                } else initSite()
             }
 
             async function initSite() {
@@ -139,10 +149,13 @@
                     contentHtml.classList.add("ff-content-scroll");
                 }
 
-                window.addEventListener("auxclick", function(clickAt) {
-                    clickAt.preventDefault()
-                    document.elementFromPoint(clickAt.clientX, clickAt.clientY).click()
+                window.addEventListener("auxclick", function(clickEv) {
+                    if (clickEv.button == 1) {
+                        clickAt.preventDefault()
+                        document.elementFromPoint(clickAt.clientX, clickAt.clientY).click()
+                    }
                 });
+
 
                 commandHtml.addEventListener("keydown", function(press) {
                     if (press.key === "Enter") {

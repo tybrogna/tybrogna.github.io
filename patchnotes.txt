@@ -1,3 +1,7 @@
+19 September 2023
+	text now starts displaying ONLY if content is visible 
+	right click no longer activates links
+
 14 September 2023
 	commandHtml will not focus after clicking link on mobile
 
