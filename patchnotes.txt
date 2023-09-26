@@ -1,3 +1,9 @@
+26 September 2023
+	Changed accusoft employment end range from "Present" to Jul 2023
+	Merged Snowbound and Accusoft work history, updated description
+	Replaced resume with a new one, dated Sep 2023
+	Added this website to personal projects section, on both interactive and full resume
+
 19 September 2023
 	text now starts displaying ONLY if content is visible 
 	right click no longer activates links

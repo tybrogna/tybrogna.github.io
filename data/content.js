@@ -39,12 +39,9 @@ const filedata = {
         '++ 8 TITLE(S)'
         ],
     "workHistory": [
-        "Accusoft",
-        "Software Engineer III | Sep 2022 - Present | Tampa Bay, FL.",
-        "Accusoft acquired Snowbound Software in Sep 2022, and I accepted a job to continue working for them, in the same role. Additional responsibility was given toward test automation and maintaining a software pipeline.",
-        "Snowbound Software",
-        "Software Engineer | Jan 2018 - Sep 2022 | Waltham, MA.",
-        "Worked on a team to maintain and expand functionality of a document processing API, used to convert document formats into raster and vector images.",
+        "Accusoft (formerly Snowbound Software)",
+        "Software Engineer III | Jan 2018 - Jul 2023 | Tampa Bay, FL.",
+        "Accusoft acquired Snowbound Software in Sep 2022, and I accepted a job to continue working for them, in the same role. Worked on a team to maintain and expand functionality of a document processing API, used to convert document formats into raster and vector images. Helped write automated tests and helped maintained the CI/CD pipeline.",
         "Conduent Legal and Compliance Services",
         "Software Developer | Jul 2015 - Jun 2017 | Albany, NY.",
         "Created web apps with PHP for data compilation, for internal use. Created automated testing frameworks for a website using Selenium. Wrote PL/SQL commands."
@@ -70,6 +67,8 @@ const filedata = {
         '<a>https://tavoe.itch.io/toom-world<a>Play on itch.io',
         'Bingo Web App',
         'Wrote server and backend for fun and learning purposes. Used Node.js, express.js, SQLite3.'
+        'This Website',
+        'Created a portfolio website to showcase my career and projects, the interactive site you see now is the second version. Used Javascript.'
         ],
     "skills": [
         "Java | C# | JavaScript | C++ | cmake | GDScript | Python | SQLite3 | Node.js | Git | JFreeChart | Unity 3D | Godot | IntelliJ | Visual Studio | VS Code | Maven | Teamcity | Microsoft Office"
