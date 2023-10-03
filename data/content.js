@@ -66,7 +66,7 @@ const filedata = {
         'Designed and programmed a 3D video game in one month. Part of a community game jam on itch.io Team size: four. Written in Godot with GDscript.',
         '<a>https://tavoe.itch.io/toom-world<a>Play on itch.io',
         'Bingo Web App',
-        'Wrote server and backend for fun and learning purposes. Used Node.js, express.js, SQLite3.'
+        'Wrote server and backend for fun and learning purposes. Used Node.js, express.js, SQLite3.',
         'This Website',
         'Created a portfolio website to showcase my career and projects, the interactive site you see now is the second version. Used Javascript.'
         ],
