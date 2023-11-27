@@ -1,3 +1,6 @@
+27 November 2023
+	Added python project to personal projects
+
 26 September 2023
 	Changed accusoft employment end range from "Present" to Jul 2023
 	Merged Snowbound and Accusoft work history, updated description

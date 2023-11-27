@@ -65,6 +65,8 @@ const filedata = {
         'TOOM WORLD',
         'Designed and programmed a 3D video game in one month. Part of a community game jam on itch.io Team size: four. Written in Godot with GDscript.',
         '<a>https://tavoe.itch.io/toom-world<a>Play on itch.io',
+        'Python Web Scraper',
+        'A web scraper to copy all the content from gamefaqs.com. A project for me to learn python. It\'s not finished, you can follow my progress on github, its going well!',
         'Bingo Web App',
         'Wrote server and backend for fun and learning purposes. Used Node.js, express.js, SQLite3.',
         'This Website',
