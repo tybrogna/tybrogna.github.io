@@ -1,4 +1,8 @@
 29 November 2023
+	Fixed the double rejection command bug
+	Doubled the text writing speed, quadrupled on mobile
+
+29 November 2023
 	Trying to make mobile experience, better, more consistent
 	fixed "frivolus" commands
 

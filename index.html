@@ -70,7 +70,7 @@
                     max-height: 70%;
                 }
             }
-            
+
             .terminal-style {
                 font-family: 'PrintChar21';
                 background: #010101;
@@ -239,6 +239,59 @@
                     return;
                 }
 
+                switch(input.toLowerCase()) {
+                case "mon ,c":
+                    console.log('yep')
+                    MONC = true;
+                    if (MONC) acceptCommand(input);
+                    break;
+                case "mon ,i":
+                    if (MONC) acceptCommand(input);
+                    commandHtml.classList.remove("nomoni");
+                    break;
+                case "mon ,o":
+                    if (MONC) acceptCommand(input);
+                    MONO = true;
+                    break;
+                case "nomon ,c":
+                    MONC = false;
+                    if (MONC) acceptCommand(input);
+                    break;
+                case "nomon ,i":
+                    if (MONC) acceptCommand(input);
+                    commandHtml.classList.add("nomoni");
+                    break;
+                case "nomon ,o":
+                    if (MONC) acceptCommand(input);
+                    MONO = false;
+                    break;
+                case "catalog":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(filedata['resumeContent']);
+                    break;
+                case "list":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(filedata['commands']);
+                    break;
+                case "rename":
+                    let newold = commandTokens[1].split(',')
+                    if (newold[1] == undefined) {
+                        if (MONO) rejectCommand("005B GS/OS");
+                        return;
+                    }
+                    if (updateLink(newold[0], newold[1])) {
+                        if (MONC) acceptCommand(input);
+                        if (MONO) rejectCommand("RENAMED TO " + newold[1]);
+                    }
+                    break;
+                case "credits":
+                    if (MONC) acceptCommand(input);
+                    if (MONO) showResumeContent(filedata['credits']);
+                    break;
+                default:
+                    break;
+                }
+
                 switch(cmdInit.toLowerCase()) {
                 case 'list':
                     if (MONC) acceptCommand(input);
@@ -296,59 +349,6 @@
                         }
                     }
                     lockLinks = false
-                    break;
-                default:
-                    break;
-                }
-
-                switch(input.toLowerCase()) {
-                case "mon ,c":
-                    console.log('yep')
-                    MONC = true;
-                    if (MONC) acceptCommand(input);
-                    break;
-                case "mon ,i":
-                    if (MONC) acceptCommand(input);
-                    commandHtml.classList.remove("nomoni");
-                    break;
-                case "mon ,o":
-                    if (MONC) acceptCommand(input);
-                    MONO = true;
-                    break;
-                case "nomon ,c":
-                    MONC = false;
-                    if (MONC) acceptCommand(input);
-                    break;
-                case "nomon ,i":
-                    if (MONC) acceptCommand(input);
-                    commandHtml.classList.add("nomoni");
-                    break;
-                case "nomon ,o":
-                    if (MONC) acceptCommand(input);
-                    MONO = false;
-                    break;
-                case "catalog":
-                    if (MONC) acceptCommand(input);
-                    if (MONO) showResumeContent(filedata['resumeContent']);
-                    break;
-                case "list":
-                    if (MONC) acceptCommand(input);
-                    if (MONO) showResumeContent(filedata['commands']);
-                    break;
-                case "rename":
-                    let newold = commandTokens[1].split(',')
-                    if (newold[1] == undefined) {
-                        if (MONO) rejectCommand("005B GS/OS");
-                        return;
-                    }
-                    if (updateLink(newold[0], newold[1])) {
-                        if (MONC) acceptCommand(input);
-                        if (MONO) rejectCommand("RENAMED TO " + newold[1]);
-                    }
-                    break;
-                case "credits":
-                    if (MONC) acceptCommand(input);
-                    if (MONO) showResumeContent(filedata['credits']);
                     break;
                 default:
                     if (MONC) acceptCommand(input);
