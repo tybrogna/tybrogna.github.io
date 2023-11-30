@@ -1,3 +1,7 @@
+29 November 2023
+	Trying to make mobile experience, better, more consistent
+	fixed "frivolus" commands
+
 27 November 2023
 	Added python project to personal projects
 

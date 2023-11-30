@@ -70,7 +70,7 @@
                     max-height: 70%;
                 }
             }
-
+            
             .terminal-style {
                 font-family: 'PrintChar21';
                 background: #010101;
@@ -143,6 +143,18 @@
                 contentHtml = document.querySelector("#content")
                 commandHtml.value = ''
 
+                if (isMobile) {
+                    computerSpeed = .1
+                    document.querySelector('.terminal-window-ht').style.height = '96%'
+                    document.querySelector('.terminal-window-ht').style.width = '100%'
+                    document.querySelector('.terminal-window-ht').style.top = '2%'
+                    document.querySelector('.terminal-window-ht').style.bottom = '2%'
+                    document.querySelector('.terminal-window-ht').style.position = 'fixed'
+                    document.querySelector('#main-terminal').style.fontSize = 'xx-large'
+                    document.querySelector('#options1').style.fontSize = 'x-large'
+                    document.querySelector('#options2').style.fontSize = 'x-large'
+                }
+
                 if (isWebkit) {
                     contentHtml.classList.add("wk-content-scroll");
                 } else {
@@ -155,7 +167,6 @@
                         document.elementFromPoint(clickAt.clientX, clickAt.clientY).click()
                     }
                 });
-
 
                 commandHtml.addEventListener("keydown", function(press) {
                     if (press.key === "Enter") {
@@ -286,7 +297,13 @@
                     }
                     lockLinks = false
                     break;
+                default:
+                    break;
+                }
+
+                switch(input.toLowerCase()) {
                 case "mon ,c":
+                    console.log('yep')
                     MONC = true;
                     if (MONC) acceptCommand(input);
                     break;
@@ -375,11 +392,29 @@
 
             async function depositText(location, text) {
                 let count = 0
-                while (count < text.length) {
-                    location.innerHTML += text.charAt(count)
-                    count++
-                    contentHtml.scrollTop = contentHtml.scrollHeight
-                    await delay(computerSpeed)
+                if (isMobile) {
+                    while (count < text.length) {
+                        location.innerHTML += text.charAt(count)
+                        count++
+                        location.innerHTML += text.charAt(count)
+                        count++
+                        location.innerHTML += text.charAt(count)
+                        count++
+                        location.innerHTML += text.charAt(count)
+                        count++
+                        contentHtml.scrollTop = contentHtml.scrollHeight
+                        await delay(computerSpeed)
+                    }
+                }
+                else {
+                    while (count < text.length) {
+                        location.innerHTML += text.charAt(count)
+                        count++
+                        location.innerHTML += text.charAt(count)
+                        count++
+                        contentHtml.scrollTop = contentHtml.scrollHeight
+                        await delay(computerSpeed)
+                    }
                 }
             }
 
