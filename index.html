@@ -293,10 +293,6 @@
                 }
 
                 switch(cmdInit.toLowerCase()) {
-                case 'list':
-                    if (MONC) acceptCommand(input);
-                    if (MONO) showResumeContent(filedata['commands']);
-                    break;
                 case 'load':
                     let cmdFilename = commandTokens[1]
                     if (cmdFilename == undefined) {

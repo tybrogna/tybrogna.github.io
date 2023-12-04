@@ -1,3 +1,6 @@
+4 December 2023
+	fixed `List` command printing twice
+
 29 November 2023
 	Fixed the double rejection command bug
 	Doubled the text writing speed, quadrupled on mobile
@@ -5,6 +8,10 @@
 29 November 2023
 	Trying to make mobile experience, better, more consistent
 	fixed "frivolus" commands
+
+3 October 2023
+	THE SITE WAS BUSTED FOR A WEEK CUZ OF A MISSING COMMA I CANNOT BELIEVE THIS
+    	Ironic that it was on a json line asserting this website was worthy of a portfolio mention
 
 27 November 2023
 	Added python project to personal projects
