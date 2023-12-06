@@ -5,6 +5,19 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
 <style>
+    @media (max-width: 999px) {
+        .widener {
+            position: absolute;
+            max-width: 96%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            /* transform: translate(-0%, -50%); */
+        }
+    }
+
     .imgop {
         opacity: 0.38;
     }
@@ -100,36 +113,6 @@
 
     ]
 
-    // let loadEvents = function() {
-    //     let eventxhr = new XMLHttpRequest();
-    //     eventxhr.open('GET', './eventDBQuery', true)
-    //     eventxhr.responseType = 'json'
-
-    //     eventxhr.onload = () => {
-    //         if (eventxhr.status != 200) { return; }
-    //         console.log("loaded")
-    //         loadTiles(eventxhr.response)
-    //     }
-    //     eventxhr.send()
-    // }
-
-    // function loadTilesPromise(events) {
-    //     return new Promise((successFunc, failureFunc) => {
-    //         let eventId = events.find(ele => ele.name == 'E3 2019 - Microsoft').id
-    //         let url = './eventTiles/' + eventId
-
-    //         let tilesxhr = new XMLHttpRequest()
-    //         tilesxhr.open('GET', url, true)
-    //         tilesxhr.responseType = 'json'
-
-    //         tilesxhr.onload = () => {
-    //             if (tilesxhr.status != 200) { return }
-    //             successFunc(tilesxhr.response)
-    //         }
-    //         tilesxhr.send()
-    //     });
-    // }
-
     let loadTiles = function(events) {
         let eventId = events.find(ele => ele.name == 'E3 2019 - Microsoft').id
         let url = './eventTiles/' + eventId
@@ -143,44 +126,6 @@
             populateCard(tilesxhr.response)
         }
         tilesxhr.send()
-    }
-
-    let populateCard = function(tileData) {
-        // console.log(tileData)
-        document.querySelectorAll(`#tile`).forEach((tile, num) => {
-            let imgbox = document.createElement('div')
-            imgbox.id = 'checkbox'
-
-            let omg = document.createElement('img')
-            omg.id = "tick"
-            omg.style.position = 'absolute'
-            omg.style.top = '50%'
-            omg.style.left = '50%'
-            omg.style.transform = 'translate(-50%, -50%)'
-            omg.src = './bingo-imgs/correct.png'
-            omg.style.visibility = 'hidden'
-
-            imgbox.appendChild(omg)
-            tile.appendChild(imgbox)
-
-            tile.addEventListener(`click`, event => {
-                if (tile.querySelector("#tick").style.visibility == 'visible') {
-                    tile.querySelector("#tick").style.visibility = 'hidden'
-                } else {
-                    tile.querySelector("#tick").style.visibility = 'visible'
-                }
-            })
-
-            // if (typeof tileData[num] !== 'undefined')
-            // {
-            //     let txt = tileData[num].tile_text
-            //     Array.from(tile.children).forEach((child, num) => {
-            //         if (child.id == "tile-text-box") {
-            //             child.innerHTML = txt
-            //         }
-            //     })
-            // }
-        })
     }
 
     function shuffle(list) {
@@ -200,7 +145,6 @@
 
 
     window.onload = async () => {
-        
         tileDataList = shuffle(tileDataList)
         document.querySelectorAll(`#tile`).forEach((tile, num) => {
             let imgbox = document.createElement('div')
@@ -212,7 +156,7 @@
             omg.style.top = '50%'
             omg.style.left = '50%'
             omg.style.transform = 'translate(-50%, -50%)'
-            omg.src = './correct.png'
+            omg.src = './bingo-imgs/correct.png'
             omg.style.visibility = 'hidden'
 
             imgbox.appendChild(omg)
@@ -245,42 +189,8 @@
         })
     }
 
-        //     let loadTilesPromise = new Promise((next, rej) => {
-        //     let url = './eventDBQuery'
-        //     let eventxhr = new XMLHttpRequest()
-        //     eventxhr.open('GET', url, true)
-        //     eventxhr.responseType = 'json'
-
-        //     eventxhr.onload = () => {
-        //         if (eventxhr.status != 200) { return }
-        //         next(eventxhr.response)
-        //     }
-        //     eventxhr.send()
-        // })
-
-        // loadTilesPromise.then((events) => {
-        //     let eventId = events.find(ele => ele.name == 'E3 2019 - Microsoft').id
-        //     console.log(eventId)
-        //     let url = './eventTiles/' + eventId
-
-        //     let tilesxhr = new XMLHttpRequest()
-        //     tilesxhr.open('GET', url, true)
-        //     tilesxhr.responseType = 'json'
-
-        //     tilesxhr.onload = () => {
-        //         if (tilesxhr.status != 200) { return }
-        //         console.log("here")
-        //         return tilesxhr.response
-        //     }
-        //     tilesxhr.send()
-        // })
-        // .then((tiles) => {
-        //     console.log("third")
-        //     console.log(tiles)
-        // })
-
 </script>
-<div class="container">
+<div class="container widener">
     <div class="row">
         <div class="text-center clamp-size-top box-shadow">
             <p class="">B</p>
