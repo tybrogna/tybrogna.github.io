@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+<style>
+    .imgop {
+        opacity: 0.38;
+    }
+    .clamp-size {
+        width: 98%;
+        margin-top: 2%;
+        object-fit: cover;
+        height: 170px;
+    }
+    .w2 {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 20%;
+    }
+    .clamp-size-top {
+        width: 20%;
+        height: 20px;
+    }
+    .tile-text {
+        position: absolute;
+        text-align: center;
+        font-weight: bold;
+        top: 50%;
+        left: 5%;
+        right: 5%;
+        transform: translate(-0%, -50%);
+        text-shadow: #FFF 1px 0 10px;
+    }
+</style>
+<script>
+
+    class Tile {
+        text = ''
+        imgLoc = ''
+        constructor(text, imgLoc) {
+            this.text = text
+            this.imgLoc = imgLoc
+        }
+    }
+
+    tileDataList = [
+        [
+            new Tile('Sega announces Virtua Fighter 6', 'vfwin'), new Tile('Sega’s new game is NOT Virtua Fighter', 'vflose')
+        ],
+        new Tile('Grand Theft Auto 6', 'vi'),
+        new Tile('Baldur\'s Gate 3 wins game of the year', 'bgwin'),
+        [
+            new Tile('Alan Wake 2 wins more than 2 awards', 'aw2'), new Tile('Alan Wake 2 wins NO awards', 'aw2')
+        ],
+        new Tile('Geoff makes reference to stage divers', 'stage'),
+        new Tile('Dragon Age 4 appears', 'da'),
+        new Tile('Fall Guys appears', 'fallguys'),
+        new Tile('Another Fucking Surivial Crafting Game', 'survive'),
+        new Tile('Another Fucking Retro Shooter Game', 'shoot'),
+        new Tile('Another Fucking Arena/Hero Shooter', 'hero'),
+        new Tile('Honkai Star Rail Trailer', 'hsr'),
+        [
+            new Tile('FFXIV wins GCBTW', 'gcbtw'), new Tile('FFXIV doesn\'t win the community award', 'gcbtw')
+        ],
+        new Tile('Zelda: Tears of the Kingdom DLC', 'zeldadlc'),
+        [
+            new Tile('Idris Elba wins cuz he\'s a Celebrity', 'elba'), new Tile('Neil Newbon wins because of Fandom Power', 'newbon')
+        ],
+        new Tile('Street Fighter 6 wins Best Fighting Game', 'ryu'),
+        new Tile('Geoff interviews one of the Esports Dorks', 'esports'),
+        new Tile('Geoff shows us a Former Friend (Hideo Kojima, Josef Fares, or Todd Howard)', 'friends'),
+        new Tile('Geoff shows us a New Friend (NOT Hideo Kojima, Josef Fares, or Todd Howard)', 'newfriends'),
+        [
+            new Tile('Capcom does something Resident Evil Related', 're'), new Tile('Capcom shows something that ISN\'T Resident Evil', 'dc')
+        ],
+        new Tile('Gamepass ad', 'gp'),
+        new Tile('Dad God DLC or Spinoff', 'blades'),
+        new Tile('One of Obsidian\'s Three in development games appear', 'obsidian'),
+        [
+            new Tile('Konami tries to buy back goodwill with MGS3','mgs3'), new Tile('Konami tries to buy back goodwill with Silent Hill 2', 'shill')
+        ],
+        new Tile('Spider-Man 2 DLC features a non-Spider-Man related Marvel Character', 'px'),
+        new Tile('Port or remake of game from the 90s', '90game'),
+        new Tile('Port or remake of game from the 00s', '00game'),
+        [
+            new Tile('Atlus reminds us of Persona by showing a trailer of game that is already out', 'persona'),
+            new Tile('Atlus desperately informs us that Metaphor Re Fantazio is the de facto Persona 6', 'mrf')
+        ],
+        new Tile('Square Enix shows another goofy FFVIIRebirth trailer', 'viirb'),
+        new Tile('Silksong', 'silk'),
+        new Tile('That Ubisoft Star Wars Game', 'usw'),
+        new Tile('Another Fucking MMO (Take a drink if it\'s Korean)', 'kmmo'),
+        new Tile('Suicide Squad Returns', 'ssquad'),
+        new Tile('Metroid Prime 2 Remaster', 'mp2'),
+        new Tile('Metroid Prime 4......?', 'mp4'),
+        new Tile('Diablo 4 new seasonal trailer', 'd4')
+
+    ]
+
+    // let loadEvents = function() {
+    //     let eventxhr = new XMLHttpRequest();
+    //     eventxhr.open('GET', './eventDBQuery', true)
+    //     eventxhr.responseType = 'json'
+
+    //     eventxhr.onload = () => {
+    //         if (eventxhr.status != 200) { return; }
+    //         console.log("loaded")
+    //         loadTiles(eventxhr.response)
+    //     }
+    //     eventxhr.send()
+    // }
+
+    // function loadTilesPromise(events) {
+    //     return new Promise((successFunc, failureFunc) => {
+    //         let eventId = events.find(ele => ele.name == 'E3 2019 - Microsoft').id
+    //         let url = './eventTiles/' + eventId
+
+    //         let tilesxhr = new XMLHttpRequest()
+    //         tilesxhr.open('GET', url, true)
+    //         tilesxhr.responseType = 'json'
+
+    //         tilesxhr.onload = () => {
+    //             if (tilesxhr.status != 200) { return }
+    //             successFunc(tilesxhr.response)
+    //         }
+    //         tilesxhr.send()
+    //     });
+    // }
+
+    let loadTiles = function(events) {
+        let eventId = events.find(ele => ele.name == 'E3 2019 - Microsoft').id
+        let url = './eventTiles/' + eventId
+
+        let tilesxhr = new XMLHttpRequest()
+        tilesxhr.open('GET', url, true)
+        tilesxhr.responseType = 'json'
+
+        tilesxhr.onload = () => {
+            if (tilesxhr.status != 200) { return }
+            populateCard(tilesxhr.response)
+        }
+        tilesxhr.send()
+    }
+
+    let populateCard = function(tileData) {
+        // console.log(tileData)
+        document.querySelectorAll(`#tile`).forEach((tile, num) => {
+            let imgbox = document.createElement('div')
+            imgbox.id = 'checkbox'
+
+            let omg = document.createElement('img')
+            omg.id = "tick"
+            omg.style.position = 'absolute'
+            omg.style.top = '50%'
+            omg.style.left = '50%'
+            omg.style.transform = 'translate(-50%, -50%)'
+            omg.src = './bingo-imgs/correct.png'
+            omg.style.visibility = 'hidden'
+
+            imgbox.appendChild(omg)
+            tile.appendChild(imgbox)
+
+            tile.addEventListener(`click`, event => {
+                if (tile.querySelector("#tick").style.visibility == 'visible') {
+                    tile.querySelector("#tick").style.visibility = 'hidden'
+                } else {
+                    tile.querySelector("#tick").style.visibility = 'visible'
+                }
+            })
+
+            // if (typeof tileData[num] !== 'undefined')
+            // {
+            //     let txt = tileData[num].tile_text
+            //     Array.from(tile.children).forEach((child, num) => {
+            //         if (child.id == "tile-text-box") {
+            //             child.innerHTML = txt
+            //         }
+            //     })
+            // }
+        })
+    }
+
+    function shuffle(list) {
+        let a = list.length;
+        let tval;
+        let rand;
+
+        while (a != 0) {
+            rand = Math.floor(Math.random() * a);
+            a --;
+            tval = list[a];
+            list[a] = list[rand];
+            list[rand] = tval;
+        }
+        return list;
+    }
+
+
+    window.onload = async () => {
+        
+        tileDataList = shuffle(tileDataList)
+        document.querySelectorAll(`#tile`).forEach((tile, num) => {
+            let imgbox = document.createElement('div')
+            imgbox.id = 'checkbox'
+
+            let omg = document.createElement('img')
+            omg.id = "tick"
+            omg.style.position = 'absolute'
+            omg.style.top = '50%'
+            omg.style.left = '50%'
+            omg.style.transform = 'translate(-50%, -50%)'
+            omg.src = './correct.png'
+            omg.style.visibility = 'hidden'
+
+            imgbox.appendChild(omg)
+            tile.appendChild(imgbox)
+
+            tile.addEventListener(`click`, event => {
+                if (tile.querySelector("#tick").style.visibility == 'visible') {
+                    tile.querySelector("#tick").style.visibility = 'hidden'
+                } else {
+                    tile.querySelector("#tick").style.visibility = 'visible'
+                }
+            })
+
+            if (tile.classList.contains('free-space')) {
+                return;
+            }
+            tileData = tileDataList[num]
+            if (tileData.length > 0) {
+                pick = Math.floor(Math.random() * tileData.length)
+                tileData = tileData[pick]
+            }
+            tile.querySelector('#tile-text-box').innerHTML = tileData.text
+            if (!tileData.imgLoc.startsWith('./bingo-imgs/')) {
+                tileData.imgLoc = './bingo-imgs/' + tileData.imgLoc
+            }
+            if (!tileData.imgLoc.endsWith('.jpg')) {
+                tileData.imgLoc = tileData.imgLoc + '.jpg'
+            }
+            tile.querySelector('#imgbox').src = tileData.imgLoc
+        })
+    }
+
+        //     let loadTilesPromise = new Promise((next, rej) => {
+        //     let url = './eventDBQuery'
+        //     let eventxhr = new XMLHttpRequest()
+        //     eventxhr.open('GET', url, true)
+        //     eventxhr.responseType = 'json'
+
+        //     eventxhr.onload = () => {
+        //         if (eventxhr.status != 200) { return }
+        //         next(eventxhr.response)
+        //     }
+        //     eventxhr.send()
+        // })
+
+        // loadTilesPromise.then((events) => {
+        //     let eventId = events.find(ele => ele.name == 'E3 2019 - Microsoft').id
+        //     console.log(eventId)
+        //     let url = './eventTiles/' + eventId
+
+        //     let tilesxhr = new XMLHttpRequest()
+        //     tilesxhr.open('GET', url, true)
+        //     tilesxhr.responseType = 'json'
+
+        //     tilesxhr.onload = () => {
+        //         if (tilesxhr.status != 200) { return }
+        //         console.log("here")
+        //         return tilesxhr.response
+        //     }
+        //     tilesxhr.send()
+        // })
+        // .then((tiles) => {
+        //     console.log("third")
+        //     console.log(tiles)
+        // })
+
+</script>
+<div class="container">
+    <div class="row">
+        <div class="text-center clamp-size-top box-shadow">
+            <p class="">B</p>
+        </div>
+        <div class="text-center clamp-size-top box-shadow">
+            <p class="">I</p>
+        </div>
+        <div class="text-center clamp-size-top box-shadow">
+            <p class="">N</p>
+        </div>
+        <div class="text-center clamp-size-top box-shadow">
+            <p class="">G</p>
+        </div>
+        <div class="text-center clamp-size-top box-shadow">
+            <p class="">O</p>
+        </div>
+    </div>
+    <div class="row">
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src='https://i.imgur.com/fuB9RBq.png'>
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src='https://i.imgur.com/fuB9RBq.png'>
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src='https://i.imgur.com/fuB9RBq.png'>
+            <div id="tile-text-box" class="tile-text">does this text interfer with the circle</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2 free-space">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div class="tile-text">MARK CERNY PUTS HIS WII IN MY XBOX</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+        <div id="tile" class="w2">
+            <img id="imgbox" class="imgop clamp-size" src="https://i.imgur.com/fuB9RBq.png">
+            <div id="tile-text-box" class="tile-text">info</div>
+        </div>
+    </div>
+</div>
