@@ -1,4 +1,7 @@
-8 Jan 2023
+29 Jan 2024
+	Updated resume to Dec 2023 version
+
+8 Jan 2024
 	added Windmill Slam project
 	reworded and fixed typos in personal projects section
 
