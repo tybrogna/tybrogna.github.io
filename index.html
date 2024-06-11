@@ -77,6 +77,10 @@
                 color: #1fc742;
             }
 
+            .terminal-title-text {
+                color: #005dc3;
+            }
+
             .ff-content-scroll {
                 scrollbar-width: none;
             }
@@ -239,6 +243,8 @@
                     return;
                 }
 
+                let worked = true
+
                 switch(input.toLowerCase()) {
                 case "mon ,c":
                     console.log('yep')
@@ -289,7 +295,13 @@
                     if (MONO) showResumeContent(filedata['credits']);
                     break;
                 default:
+                    worked = false
                     break;
+                }
+
+                if (worked) {
+                    if (!isMobile) commandHtml.focus()
+                    return
                 }
 
                 switch(cmdInit.toLowerCase()) {
@@ -368,15 +380,18 @@
                     lockLinks = false
             }
 
-            async function showResumeContent(contentArr) {                
+            async function showResumeContent(contentArr) {
                 for (const ele of contentArr) {
                     let cjDiv = eleCreator('div', `content${++contentCount}`, 'margin-top padding-left')
                     contentHtml.appendChild(cjDiv)
-                    if (ele.charAt(0) === '<' && ele.charAt(1) === 'a' && ele.charAt(2) === '>') {
+                    if (ele.slice(0, 3) === '<a>') {
                         let link = eleCreator('a', `content${++contentCount}`)
                         link.href = ele.substring(3, ele.indexOf("<a>", 3))
                         cjDiv.appendChild(link)
                         await depositText(link, ele.substring(ele.indexOf("<a>", 3) + 3))
+                    } else if (ele.slice(0, 3) === '<t>') {
+                        cjDiv.classList.add('terminal-title-text')
+                        await depositText(cjDiv, ele.substring(3))
                     } else {
                         await depositText(cjDiv, ele)
                     }

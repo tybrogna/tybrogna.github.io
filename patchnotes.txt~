@@ -1,0 +1,70 @@
+8 Jan 2023
+	added Windmill Slam project
+	reworded and fixed typos in personal projects section
+
+4 December 2023
+	fixed `List` command printing twice
+
+29 November 2023
+	Fixed the double rejection command bug
+	Doubled the text writing speed, quadrupled on mobile
+
+29 November 2023
+	Trying to make mobile experience, better, more consistent
+	fixed "frivolus" commands
+
+3 October 2023
+	THE SITE WAS BUSTED FOR A WEEK CUZ OF A MISSING COMMA I CANNOT BELIEVE THIS
+    	Ironic that it was on a json line asserting this website was worthy of a portfolio mention
+
+27 November 2023
+	Added python project to personal projects
+
+26 September 2023
+	Changed accusoft employment end range from "Present" to Jul 2023
+	Merged Snowbound and Accusoft work history, updated description
+	Replaced resume with a new one, dated Sep 2023
+	Added this website to personal projects section, on both interactive and full resume
+
+19 September 2023
+	text now starts displaying ONLY if content is visible 
+	right click no longer activates links
+
+14 September 2023
+	commandHtml will not focus after clicking link on mobile
+
+10 September 2023
+	fullresume: added cmake to skills
+	interactive resume: added cmake to skills
+	fullresume: added PL/SQL to conduent
+	interactive reusme: added PL/SQL to conduent
+	removed `undefined` when trying to load no file
+	added `0046 GS/OS` error when loading a file that doesn't exist
+	typos on full resume in conduent section
+	typos on full resume in education section
+	typos on full resume in others section
+	education now only shows graduation date
+	
+
+28 April 2023
+	removed "charts again"
+	toom world team size 3 -> 4
+	auto focus input field when page loads
+	cant mess up links by rapidly clicking on multiple
+	middle click runs commands instead of opening tabs
+	added last command functionality
+	override default up and down arrow behavior
+	work projects -> professional projects
+	works on resolutions as low as 800*600 (lower untested)
+	work projects changed slightly
+	added github link to terminal links
+	added github link to full resume
+	added "full resume pdf" link to terminal page
+	changed "full resume" to "full resume html" to terminal page
+	added "PDF resume" and "HTML resume" to links
+	OWNERSHIP OF TYLER BROGNA -> DESIGNED BY TYLER BROGNA
+	changed picture on full resume so i look less ugly
+		secret picture on mouseover
+	deleted extra fonts and images
+	added favicon
+	updated README (i really dont care about the README)
