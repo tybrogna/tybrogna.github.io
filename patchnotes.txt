@@ -1,3 +1,11 @@
+8 Aug 2024
+	Turned Work History, Professional Projects, and Personal Projects sections into links. Should be a lot easier to read now
+	File name and link generation is dynamic now. Should be less work to add more as time passes, and i get more jobs (cross fingers)
+	Added Shah, Dixit & Associates work
+
+6 Aug 2024
+	Updated PDF resume
+
 29 Jan 2024
 	Updated resume to Dec 2023 version
 

@@ -218,13 +218,13 @@
 
             async function generateAllLinks() {
                 await delay(250)
-                await createLink(document.querySelector("#options1"), 'Work History', `LOAD ${Object.keys(filenames)[0]}`)
-                await createLink(document.querySelector("#options1"), 'Professional Projects', `LOAD ${Object.keys(filenames)[1]}`)
-                await createLink(document.querySelector("#options1"), 'Personal Projects', `LOAD ${Object.keys(filenames)[2]}`)
-                await createLink(document.querySelector("#options1"), 'Education', `LOAD ${Object.keys(filenames)[3]}`)
-                await createLink(document.querySelector("#options2"), 'Skills', `LOAD ${Object.keys(filenames)[4]}`)
-                await createLink(document.querySelector("#options2"), 'Other', `LOAD ${Object.keys(filenames)[5]}`)
-                await createLink(document.querySelector("#options2"), 'Links', `LOAD ${Object.keys(filenames)[6]}`)
+                await createLink(document.querySelector("#options1"), 'Work History', `LOAD ${getByValue(filenames, 'workHistoryLinks')}`)
+                await createLink(document.querySelector("#options1"), 'Professional Projects', `LOAD ${getByValue(filenames, 'workProjectsLinks')}`)
+                await createLink(document.querySelector("#options1"), 'Personal Projects', `LOAD ${getByValue(filenames, 'personalProjectLinks')}`)
+                await createLink(document.querySelector("#options1"), 'Education', `LOAD ${getByValue(filenames, 'education')}`)
+                await createLink(document.querySelector("#options2"), 'Skills', `LOAD ${getByValue(filenames, 'skills')}`)
+                await createLink(document.querySelector("#options2"), 'Other', `LOAD ${getByValue(filenames, 'other')}`)
+                await createLink(document.querySelector("#options2"), 'Links', `LOAD ${getByValue(filenames, 'links')}`)
                 await createLink(document.querySelector("#options2"), 'List Commands', 'LIST')
                 await createLink(document.querySelector("#options2"), 'Credits', 'CREDITS')
                 await createLink(document.querySelector("#options2"), 'Full Resume HTML', 'RUN WEB cv')
@@ -247,7 +247,6 @@
 
                 switch(input.toLowerCase()) {
                 case "mon ,c":
-                    console.log('yep')
                     MONC = true;
                     if (MONC) acceptCommand(input);
                     break;
@@ -279,17 +278,6 @@
                     if (MONC) acceptCommand(input);
                     if (MONO) showResumeContent(filedata['commands']);
                     break;
-                case "rename":
-                    let newold = commandTokens[1].split(',')
-                    if (newold[1] == undefined) {
-                        if (MONO) rejectCommand("005B GS/OS");
-                        return;
-                    }
-                    if (updateLink(newold[0], newold[1])) {
-                        if (MONC) acceptCommand(input);
-                        if (MONO) rejectCommand("RENAMED TO " + newold[1]);
-                    }
-                    break;
                 case "credits":
                     if (MONC) acceptCommand(input);
                     if (MONO) showResumeContent(filedata['credits']);
@@ -313,13 +301,21 @@
                         return;
                     }
 
-                    if (filenames.hasOwnProperty(cmdFilename.toLowerCase())) {
+                    if (filenames.has(cmdFilename)) {
                         if (MONC) acceptCommand(cmdInit + ' ' + cmdFilename)
-                        if (MONO) showResumeContent(filedata[filenames[cmdFilename]])
+                        if (MONO) showResumeContent(filedata[filenames.get(cmdFilename)])
                     } else {
                         if (MONC) acceptCommand(cmdInit)
                         if (MONO) rejectCommand("0046 GS/OS")
                     }
+
+                    // if (filenames.hasOwnProperty(cmdFilename.toLowerCase())) {
+                    //     if (MONC) acceptCommand(cmdInit + ' ' + cmdFilename)
+                    //     if (MONO) showResumeContent(filedata[filenames[cmdFilename]])
+                    // } else {
+                    //     if (MONC) acceptCommand(cmdInit)
+                    //     if (MONO) rejectCommand("0046 GS/OS")
+                    // }
                     break;
                 case 'run':
                     let cmdProgram = commandTokens[1]
@@ -357,6 +353,17 @@
                         }
                     }
                     lockLinks = false
+                    break;
+                case "rename":
+                    let newold = commandTokens[1].split(',')
+                    if (newold[1] == undefined) {
+                        if (MONO) rejectCommand("005B GS/OS");
+                        return;
+                    }
+                    if (updateLink(newold[0], newold[1])) {
+                        if (MONC) acceptCommand(input);
+                        if (MONO) rejectCommand("RENAMED TO " + newold[1]);
+                    }
                     break;
                 default:
                     if (MONC) acceptCommand(input);
@@ -451,30 +458,34 @@
                     return false;
                 }
 
-                if (Object.keys(filenames).includes(newFilename)) {
+                if (!filenames.has(oldFilename) || filenames.has(newFilename)) {
                     if (MONO) rejectCommand("005B GS/OS");
                     return false;
                 }
+
+                // if (Object.keys(filenames).includes(newFilename)) {
+                //     if (MONO) rejectCommand("005B GS/OS");
+                //     return false;
+                // }
 
                 if (!isNaN(parseInt(newFilename.charAt(0)))) {
                     if (MONO) rejectCommand("005B GS/OS");
                     return false;
                 }
 
+                filenames.set(newFilename, filenames.get(oldFilename))
+                filenames.delete(oldFilename)
+                
                 let oldLink = document.querySelector('a[href*="LOAD ' + oldFilename + '"]')
-                if (Object.keys(filenames).includes(oldFilename) && oldLink != null) {
-                    filenames[newFilename] = filenames[oldFilename]
-                    delete filenames[oldFilename]
+                if (oldLink != null) {
+                    // filenames[newFilename] = filenames[oldFilename]
+                    // delete filenames[oldFilename]
                     oldLink.href = `javascript:typeInput("LOAD ${newFilename}")`
-
                     const idx = filedata['resumeContent'].indexOf(`[ ] ${oldFilename}`)
                     filedata['resumeContent'][idx] = `[ ] ${newFilename}`
-
-                    return true;
                 }
 
-                if (MONO) rejectCommand('0001 GS/OS')
-                return false;
+                return true;
             }
 
             async function typeInput(text) {
