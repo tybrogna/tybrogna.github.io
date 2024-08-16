@@ -205,10 +205,11 @@ function generateFilenames() {
                 tries ++
                 appendKey = shortKey + tries.toString()
             }
+            shortKey = appendKey
         }
 
         filenames.set(shortKey, key)
-        // console.log(shortKey + ", " + key)
+        console.log(shortKey + ", " + key)
     });
     return filenames
 }
