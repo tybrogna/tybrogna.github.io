@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<script src="js/zip-full.min.js"></script>
+<script>
+window.onload = async () => {
+    const response = await fetch('http://localhost:8000/z.zip', {mode: 'no-cors'})
+    if (!response.ok) {
+        console.log(response)
+    }
+    console.log(await response.json())
+    let zipFileReader = new zip.BlobReader('./bingo-imgs/z.zip')
+    console.log(zipFileReader)
+    let zipReader = new zip.ZipReader(zipFileReader)
+    console.log(zipReader)
+    let firstEntry = (await zipReader.getEntries()).shift()
+    console.log(firstEntry)
+}
+</script>
