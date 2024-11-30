@@ -4,7 +4,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-    <script src="js/zip-full.min.js"></script>
 <style>
     @media (max-width: 999px) {
         .widener {
@@ -162,7 +161,7 @@
             omg.style.top = '50%'
             omg.style.left = '50%'
             omg.style.transform = 'translate(-50%, -50%)'
-            omg.src = './bingo-imgs/correct.png'
+            omg.src = './img/correct.png'
             omg.style.visibility = 'hidden'
 
             imgbox.appendChild(omg)
@@ -185,8 +184,8 @@
                 tileData = tileData[pick]
             }
             tile.querySelector('#tile-text-box').innerHTML = tileData.text
-            if (!tileData.imgLoc.startsWith('./bingo-imgs/')) {
-                tileData.imgLoc = './bingo-imgs/' + tileData.imgLoc
+            if (!tileData.imgLoc.startsWith('./img/bingo-23/')) {
+                tileData.imgLoc = './img/bingo-23/' + tileData.imgLoc
             }
             if (!tileData.imgLoc.endsWith('.jpg')) {
                 tileData.imgLoc = tileData.imgLoc + '.jpg'

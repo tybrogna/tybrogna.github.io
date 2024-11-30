@@ -7,15 +7,60 @@
 <style>
     @media (max-width: 999px) {
         .widener {
-            position: absolute;
-            max-width: 96%;
+            /* position: absolute; */
+            /* max-width: 96%;
             left: 0;
             right: 0;
             top: 0;
             bottom: 0;
-            margin: auto;
-            /* transform: translate(-0%, -50%); */
+            margin: auto; */
+            animation-name: get-smaller;
+            animation-duration: .5s;
+            max-width: 96%;
         }
+
+        @keyframes get-smaller {
+            from { max-width: 100%; }
+            to {
+                position: absolute;
+                max-width: 96%;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+            }
+        }
+    }
+
+    @media (min-width: 1000px) {
+        .widener {
+            animation-name: get-bigger;
+            animation-duration: .5s;
+            /* max-width: 100% */
+        }
+
+        @keyframes get-bigger {
+            from {
+                position: absolute;
+                max-width: 96%;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+            }
+            to { }
+        }
+    }
+
+    body {
+        background-color: #3B1E54;
+    }
+
+    .shell {
+        height: 100vh;
+        background-color: #9B7EBD;
     }
 
     .imgop {
@@ -28,14 +73,32 @@
         height: 170px;
     }
     .w2 {
+        transition: all 2s cubic-bezier(0, 0.4, 0.5, 1);
+        background-color: #FFFFFF;
         position: relative;
         top: 0;
         left: 0;
         width: 20%;
     }
-    .clamp-size-top {
+
+    .tl-round {
+        border-radius: 25px 0 0 0;
+    }
+    .tr-round {
+        border-radius: 0 25px 0 0;
+    }
+    .bl-round {
+        border-radius: 0 0 0 25px;
+    }
+    .br-round {
+        border-radius: 0 0 25px 0;
+    }
+
+    .txt-header-widen {
         width: 20%;
-        height: 20px;
+    }
+    .geoff-text {
+        font-size: 20pt;
     }
     .tile-text {
         position: absolute;
@@ -45,7 +108,32 @@
         left: 5%;
         right: 5%;
         transform: translate(-0%, -50%);
-        text-shadow: #FFF 1px 0 10px;
+        text-shadow: #CB9DF0 1px 0 10px;
+        max-width: 187.93px;
+    }
+
+    .tick-hidden {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: scale(1.5, 1.5) translate(-33%, -33%);
+        opacity: 0.0;
+    }
+
+    .tick-anim {
+        transition: all .2s cubic-bezier(0, 0.4, 0.5, 1);
+    }
+
+    .tick-visible {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: scale(1,1) translate(-50%, -50%);
+        opacity: 1.0;
+    }
+
+    .win {
+        background-color: gold;
     }
 </style>
 <script>
@@ -57,8 +145,8 @@
             this.text = text
             this.imgLoc = imgLoc
             if (this.imgLoc != null) {
-                if (!this.imgLoc.startsWith('./bingo-imgs-24/')) {
-                    this.imgLoc = './bingo-imgs-24/' + this.imgLoc
+                if (!this.imgLoc.startsWith('./img/bingo-24/')) {
+                    this.imgLoc = './img/bingo-24/' + this.imgLoc
                 }
                 if (!this.imgLoc.endsWith('.jpg')) {
                     this.imgLoc = this.imgLoc + '.jpg'
@@ -67,7 +155,7 @@
         }
     }
 
-    const freeTile = new Tile('Tekken 7 Not Nominated for Best Score and Music')
+    const freeTile = new Tile('Tekken 8 Not Nominated for Best Score and Music', 'jamz')
     const tileDataList = [
         [
             new Tile('Switch 2?!?!!?', 'switch2'), new Tile('no switch 2', 'noswitch2')
@@ -79,10 +167,10 @@
             new Tile('The same game wins GotY and Game Direction', 'spiderman'), new Tile('Different Games win GotY and Game Direction', 'nospiderman')
         ],
         [
-            new Tile('FFVII Rebirth wins Game of the Year', 'cloud'), new Tile('Elden Ring reclaims GotY', 'erer'), new Tile('Dark horse Balatro wins GotY', 'joker')
+            new Tile('FFVII Rebirth wins Game of the Year', 'ffviiwin'), new Tile('Elden Ring reclaims GotY', 'erer'), new Tile('Dark horse Balatro wins GotY', 'joker')
         ],
         [
-            new Tile('ASTRO BOT wins more than two awards', 'bot'), new Tile('ASTRO BOT wins zero awards', 'dokodemo')
+            new Tile('ASTRO BOT wins more than two awards', 'bot'), new Tile('ASTRO BOT wins zero awards', 'toro')
         ],
         [
             new Tile('Best Fighting Game: a game that actually came out this year wins', 'hgwells'), new Tile('Best Fighting Game: A port/enhanced version wins', 'bttf')
@@ -96,40 +184,39 @@
         [
             new Tile('Best Esports game: Valve game wins', 'valve'), new Tile('Best Esports Game: Riot game wins', 'riot')
         ],
-        [
-            new Tile('Expansion/DLC for a game released this year', 'sblade'), new Tile('Expansion/DLC for a game released in 2023 or earlier', 'zelda')
-        ],
+        new Tile('Expansion/DLC for a game released this year', 'sblade'),
         new Tile('Geoff interviews a cringe content creator (they\'re all cringe)', 'tiktok'),
         new Tile('Geoff interviews an esports dork (they\'re all dorks)', 'mtndew'),
         new Tile('Fortnite collab announcement', 'fnite'),
-        new Tile('Marvel rivals ad', 'ssquad'),
+        new Tile('Marvel rivals ad', 'rivals'),
         new Tile('FFXIV jumpscare', 'meteor'),
         new Tile('Halo unreal jumpscare', 'chief'),
-        new Tile('Metroid Prime 4!', 'mp4'),
-        new Tile('One of MS\'s purgatorial projects appears (Everwilds, State of Decay 3, Outer Worlds 2, etc)', 'hell'),
+        new Tile('Metroid Prime!', 'mp4'),
+        new Tile('Any of MS\'s missing projects appears (Everwilds, State of Decay 3, Outer Worlds 2, etc)', 'hell'),
         new Tile('New Season of ongoing game announcement', 'stonks'),
         new Tile('"Available Right Now!"', 'boom'),
         new Tile('Silksong', 'clown'),
         new Tile('Virtua Fighter shows up somehow', 'missing'),
-        new Tile('Personnel from last year\'s winner presents/appears (Alan Wake 2, BG3, Zelda)', 'pirates'),
+        new Tile('Personnel from last year\'s winner presents/appears (Alan Wake 2, BG3, Zelda)', 'veggie'),
         new Tile('Big name property goes mobile', 'wow'),
-        new Tile('Arknights/Genshin/Star Rail/ZZZ', 'phone'),
-        new Tile('Hideo Kojima™®©', 'friends'),
+        new Tile('Arknights/Genshin/Star Rail/ZZZ/Nikki', 'gatcha'),
+        new Tile('Geoff Friend™®© (Industry professional who has been onstage before)', 'friends'),
         new Tile('Next Battlefield game', 'bf6'),
         new Tile('New or Upcoming Konami Game', 'tokimeki'),
         new Tile('Another Fucking MMO (drink if its korean)', 'kmmo'),
         new Tile('Gamepass ad', 'gp'),
         new Tile('Crazy Taxi, Golden Axe, Jet Set, Shinobi or Streets of Rage reappears', 'sega'),
-        new Tile('No Man\'s Sky or Light No Fire reappears', 'hello'),
-        new Tile('Big Name Mystery game from last year reappears (Exodus, Kemuri, Last Sentinel, OD)', 'loot'),
+        new Tile('No Man\'s Sky or Light No Fire', 'hello'),
+        new Tile('Big Name Mystery game from last year reappears (Exodus, Kemuri, Last Sentinel, OD)', 'mbox'),
         new Tile('Monster Hunter Wilds', 'mhw'),
         new Tile('Naughty Dogg\'s next game', 'crash'),
         new Tile('Insomniac\'s next game', 'spyro'),
-        new Tile('New Nintendo game for swtich 2 (or with a suspicious lack of confirmed platforms)', 'jumpman'),
+        new Tile('New Nintendo game for switch 2 (or with a suspicious lack of confirmed platforms)', 'jumpman'),
         new Tile('Previous Xbox-only game goes multiplatform', 'lucky'),
-        new Tile('Dead franchise gets steam port', 'breathoffire'),
+        new Tile('Dead franchise gets revived', 'breathoffire'),
         new Tile('VR Game', 'quest'),
-        new Tile('Grand Theft Auto 6', 'gta6')
+        new Tile('Grand Theft Auto 6', 'gta6'),
+        new Tile('Crazy looking Chinese AAA game', 'china')
     ]
 
     let loadTiles = function(events) {
@@ -164,6 +251,8 @@
     }
 
     // https://github.com/bryc/code/blob/master/jshash/PRNGs.md
+    // needed a random number generator that i could seed to get the same result every time
+    // not smart enough to make my own, used this one
     function jsf32b(aIn, bIn, cIn, dIn) {
         let a = aIn, b = bIn, c = cIn, d = dIn;
         return function() {
@@ -180,6 +269,8 @@
     }
 
     // https://gist.github.com/azat/2762138
+    // needed a function to turn a string into a bunch of numbers to seed a random number generator
+    // figured i didnt have to make my own
     var crc32 = function(str) {
         for(var i=256, tbl=[], crc, j; i--; tbl[i]=crc>>>0){
             j=8;for(crc=i;j--;)crc=crc&1?crc>>>1^0xEDB88320:crc>>>1;
@@ -191,46 +282,149 @@
         }
     }();
 
-    // window.onload = async () => {
-    //     buildCardHtml()
-    //     buildCardContent()
-    // }
-
-    window.onload = async () => {
-        const response = await fetch('./bingo-imgs/z.zip');
-        console.log(response)
-        let zipFileReader = new zip.BlobReader('./bingo-imgs/z.zip')
-        console.log(zipFileReader)
-        let zipReader = new zip.ZipReader(zipFileReader)
-        console.log(zipReader)
-        let firstEntry = (await zipReader.getEntries()).shift()
-        console.log(firstEntry)
+    function salt(val) {
+        let rem2 = val % 100
+        let rem4 = val % 10000
+        let mult = Math.abs(rem2).toString() + Math.abs(rem4).toString()
+        return val * Number(mult)
     }
 
+    window.onload = async () => {
+        fillSeedBox()
+        buildCardHtml()
+        buildCardContent()
+    }
 
-    const bingoLetters = ['b','i','n','g','o']
+    function fillSeedBox() {
+        if (!localStorage.getItem('seed')) {
+            localStorage.setItem('seed', 'Enter your name or email or something')
+            document.querySelector('#seed-box').value = 'Enter your name or email or something'
+        }
+        document.querySelector('#seed-box').value = localStorage.getItem('seed')
+    }
+
+    let B = []
+    let I = []
+    let N = []
+    let G = []
+    let O = []
+    let one = []
+    let two = []
+    let three = []
+    let four = []
+    let five = []
+    const bingoLetters = ['B','I','N','G','O']
     const colNumbers = [1,2,3,4,5]
+
     function buildCardHtml() {
         colNumbers.forEach((num) => {
             let bingoRowEle = document.createElement('div')
             bingoRowEle.classList = ['row']
             bingoLetters.forEach((letter) => {
                 let tileEle = document.createElement('div')
-                tileEle.id = 'tile' + letter + num
-                tileEle.classList = 'w2'
+                let bingoId = letter + num
+                tileEle.id = bingoId
+                tileEle.classList = getTileClassList(letter, num)
                 let imgEle = document.createElement('img')
                 imgEle.id = 'imgbox'
-                imgEle.classList = 'imgop clamp-size'
+                imgEle.classList = 'imgop clamp-size ' + getImgClassList(letter, num)
                 let textEle = document.createElement('div')
                 textEle.id = 'tile-text-box'
                 textEle.classList = 'tile-text'
                 textEle.innerHTML = '-'
                 tileEle.appendChild(imgEle)
                 tileEle.appendChild(textEle)
+                sortTiles(tileEle)
+                // tileEles[bingoId.charAt(0)][bingoId.charAt(1)] = tileEle
                 bingoRowEle.appendChild(tileEle)
             })
-            document.querySelector('#main').appendChild(bingoRowEle)
+            document.querySelector('.shell').appendChild(bingoRowEle)
         })
+        document.querySelector('#seed-box').addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.querySelector('#regen').click();
+            }
+        })
+        console.log(B)
+        console.log(five)
+    }
+
+    let bingoObj = {
+        'B': [],
+        'I': [],
+        'N': [],
+        'G': [],
+        'O': [],
+        '1': [],
+        '2': [],
+        '3': [],
+        '4': [],
+        '5': []
+    }
+    function sortTiles(ele) {
+        if (ele.id.startsWith('B')) {
+            bingoObj['B'].push(ele)
+        }
+        if (ele.id.startsWith('I')) {
+            bingoObj['I'].push(ele)
+        }
+        if (ele.id.startsWith('N')) {
+            bingoObj['N'].push(ele)
+        }
+        if (ele.id.startsWith('G')) {
+            bingoObj['G'].push(ele)
+        }
+        if (ele.id.startsWith('O')) {
+            bingoObj['O'].push(ele)
+        }
+        if (ele.id.endsWith('1')) {
+            bingoObj['1'].push(ele)
+        }
+        if (ele.id.endsWith('2')) {
+            bingoObj['2'].push(ele)
+        }
+        if (ele.id.endsWith('3')) {
+            bingoObj['3'].push(ele)
+        }
+        if (ele.id.endsWith('4')) {
+            bingoObj['4'].push(ele)
+        }
+        if (ele.id.endsWith('5')) {
+            bingoObj['5'].push(ele)
+        }
+    }
+
+    function getTileClassList(letter, num) {
+        let classes = 'w2 '
+        if (letter == 'B') {
+            classes += 'pl-1 '
+        }
+        if (num == 5) {
+            classes += 'pb-1 '
+        }
+        classes += getImgClassList(letter, num)
+        return classes
+    }
+
+    function getImgClassList(letter, num) {
+        let classes = ''
+        if (letter == 'B') {
+            if (num == 1) {
+                classes += 'tl-round '
+            } else if (num == 5) {
+                classes += 'bl-round '
+            }
+        }
+        else if (letter == 'O' && num == 1) {
+            classes += 'tr-round'
+        }
+        if (num == 5) {
+            if (letter == 'O') {
+                classes += 'br-round '
+            }
+        }
+        return classes
     }
 
     function createTickElement() {
@@ -238,111 +432,182 @@
         imgbox.id = 'checkbox'
         let omg = document.createElement('img')
         omg.id = "tick"
-        omg.style.position = 'absolute'
-        omg.style.top = '50%'
-        omg.style.left = '50%'
-        omg.style.transform = 'translate(-50%, -50%)'
-        omg.src = './bingo-imgs/correct.png'
-        omg.style.visibility = 'hidden'
-
+        omg.classList += 'tick-hidden tick-anim'
+        omg.src = './img/correct24.png'
         imgbox.appendChild(omg)
         return imgbox
     }
 
-    function buildCardContent() {
+    function getPRNG() {
         let seedText = document.querySelector('#seed-box').value
+        localStorage.setItem('seed', seedText)
         let v = crc32(seedText)
-        let random = jsf32b(0xF1EA5EED,v,v,v)
+        v = salt(v)
+        return jsf32b(0xF1EA5EED,v,v,v)
+    }
+
+    let ticking = 0
+    function buildCardContent() {
+        let random = getPRNG()
         let shuffled = shuffle(tileDataList, random)
         let count = 0
         colNumbers.forEach((num) => {
             bingoLetters.forEach((letter) => {
-                let tileEle = document.querySelector('#tile' + letter + num)
+                let tileEle = document.querySelector('#' + letter + num)
                 let tileData = shuffled[++count]
-                if (tileEle.id == 'tilen3') {
+                if (tileEle.id == 'N3') {
+                    console.log('free')
                     tileData = freeTile
                 }
-                // applyTileData(tileEle, tileData)
-                tileEle.append(createTickElement())
-                tileEle.addEventListener('click', event => {
-                    let visStatus = tileEle.querySelector('#tick').style.visibility
-                    if (visStatus == 'visible') {
-                        visStatus = 'hidden'
-                    } else {
-                        visStatus = 'visible'
-                    }
-                })
+
+                if (!tileEle.querySelector('#checkbox')) {
+                    tileEle.append(createTickElement())
+                    tileEle.addEventListener('click', event => {
+                        if (tileEle.querySelector('#tick').classList.contains('tick-visible')) {
+                            tileEle.querySelector('#tick').classList.remove('tick-visible')
+                            tileEle.querySelector('#tick').classList.add('tick-hidden')
+                        } else {
+                            tileEle.querySelector('#tick').classList.remove('tick-hidden')
+                            tileEle.querySelector('#tick').classList.add('tick-visible')
+                        }
+                        ticking += 1
+                        setTimeout(checkBingo, 500)
+                    })
+                }
+
                 if (tileData.length > 0) {
                     pick = Math.floor(random() * tileData.length)
                     tileData = tileData[pick]
                 }
+                tileEle.querySelector('#tile-text-box').innerHTML = tileData.text
                 tileEle.querySelector('#imgbox').src = tileData.imgLoc
-
-                // tile.append(createTickElement())
-                // tile.addEventListener(`click`, event => {
-                //     if (tile.querySelector("#tick").style.visibility == 'visible') {
-                //         tile.querySelector("#tick").style.visibility = 'hidden'
-                //     } else {
-                //         tile.querySelector("#tick").style.visibility = 'visible'
-                //     }
-                // })
-
-                // // let tileData = shuffled[++count]
-                // if (tileData.length > 0) {
-                //     pick = Math.floor(random() * tileData.length)
-                //     tileData = tileData[pick]
-                // }
-                // tile.querySelector('#tile-text-box').innerHTML = tileData.text
-                // if (!tileData.imgLoc.startsWith('./bingo-imgs/')) {
-                //     tileData.imgLoc = './bingo-imgs/' + tileData.imgLoc
-                // }
-                // if (!tileData.imgLoc.endsWith('.jpg')) {
-                //     tileData.imgLoc = tileData.imgLoc + '.jpg'
-                // }
-                // tile.querySelector('#imgbox').src = tileData.imgLoc
             })
         })
     }
 
-    function applyTileData(tileEle, tileData) {
-        tileEle.append(createTickElement())
-        tileEle.addEventListener('click', event => {
-            let visStatus = tileEle.querySelector('#tick').style.visibility
-            if (visStatus == 'visible') {
-                visStatus = 'hidden'
-            } else {
-                visStatus = 'visible'
-            }
-        })
-        if (tileData.length > 0) {
-            pick = Math.floor(random() * tileData.length)
-            tileData = tileData[pick]
+    function checkBingo() {
+        ticking -= 1
+        if (ticking > 0) {
+            return
         }
-        tileEle.querySelector('#imgbox').src = tileData.imgLoc
+
+        for (const [key, value] of Object.entries(bingoObj)) {
+            value.forEach(tile => {
+                tile.classList.remove('win')
+                tile.querySelector('#tick').src = './img/correct24.png'
+            })
+        }
+
+        let diagMarked = checkBingoTiles([bingoObj['B'][0], bingoObj['I'][1], bingoObj['N'][2], bingoObj['G'][3], bingoObj['O'][4]])
+        if (diagMarked == 4) {
+
+        } else if (diagMarked == 5) {
+
+        }
+        checkBingoTiles([bingoObj['B'][4], bingoObj['I'][3], bingoObj['N'][2], bingoObj['G'][1], bingoObj['O'][0]])
+
+
+        for (const [key, value] of Object.entries(bingoObj)) {
+            let numMarked = checkBingoTiles(value)
+            if (numMarked == 4) {
+
+            } else if (numMarked == 5) {
+
+            }
+        }
+
+        fiveMarked.forEach(tileArr => {
+
+        })
+
+        fourMarked.forEach(tileArr => {
+
+        })
+
+
+        // checkBingoArrayClear(B)
+        // checkBingoArrayHelper(B)
+
+        // let markedTicks = []
+        // tickCount = 0
+        // B[0].querySelector('#tick').src = './img/close.png'
+        // for (let a = 0; a < B.length; a ++) {
+        //     if (B[a].querySelector('#tick').classList.contains('tick-visible')) {
+        //         tickCount += 1
+        //     }
+        // }
+        // if (tickCount == 4) {
+        //     for (let a = 0; a < B.length; a ++) {
+        //         B[a].querySelector('#tick').src = './img/close.png'
+        //         B[a].classList.remove('win')
+        //     }
+        // } else if (tickCount == 5) {
+        //     for (let a = 0; a < B.length; a ++) {
+        //         B[a].querySelector('#tick').src = './img/bingo.png'
+        //         B[a].classList.add('win')
+        //     }
+        // } else {
+        //     for (let a = 0; a < B.length; a ++) {
+        //         B[a].querySelector('#tick').src = './img/correct24.png'
+        //         B[a].classList.remove('win')
+        //     }
+        // }
+    }
+
+    function checkBingoTiles(tileArr) {
+        let markedTicks = []
+        tickCount = 0
+        for (let a = 0; a < tileArr.length; a ++) {
+            if (tileArr[a].querySelector('#tick').classList.contains('tick-visible')) {
+                tickCount += 1
+            }
+        }
+        if (tickCount == 4) {
+            console.log('happening')
+            for (let a = 0; a < tileArr.length; a ++) {
+                console.log(tileArr[a].querySelector('#tick'))
+                tileArr[a].querySelector('#tick').src = './img/close.png'
+            }
+            return 4
+        } else if (tickCount == 5) {
+            for (let a = 0; a < tileArr.length; a ++) {
+                tileArr[a].querySelector('#tick').src = './img/bingo.png'
+                tileArr[a].classList.add('win')
+            }
+            return 5
+        } /* else {
+            for (let a = 0; a < tileArr.length; a ++) {
+                tileArr[a].querySelector('#tick').src = './img/correct24.png'
+            }
+        } */
     }
 
 </script>
-<div id="main" class="container widener">
-    <div class="row">
-        <span>Card Seed</span>
-        <input id="seed-box" value="33"></input>
-        <button onclick="buildCardContent()">Regenerate</button>
+<body>
+    <div id="main" class="container widener">
+        <div class="shell pl-5 pr-5">
+            <div class="row pt-3">
+                <span class='pr-2'>Card Seed</span>
+                <input id="seed-box" class='mr-2' value=""></input>
+                <button id="regen" onclick="buildCardContent()">Regenerate</button>
+            </div>
+            <div class="row pt-2 pb-2">
+                <div class="text-center txt-header-widen box-shadow">
+                    <span class="geoff-text">G</span>
+                </div>
+                <div class="text-center txt-header-widen box-shadow">
+                    <span class="geoff-text">E</span>
+                </div>
+                <div class="text-center txt-header-widen box-shadow">
+                    <span class="geoff-text">O</span>
+                </div>
+                <div class="text-center txt-header-widen box-shadow">
+                    <span class="geoff-text">F</span>
+                </div>
+                <div class="text-center txt-header-widen box-shadow">
+                    <span class="geoff-text">F</span>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-        <div class="text-center clamp-size-top box-shadow">
-            <p class="">B</p>
-        </div>
-        <div class="text-center clamp-size-top box-shadow">
-            <p class="">I</p>
-        </div>
-        <div class="text-center clamp-size-top box-shadow">
-            <p class="">N</p>
-        </div>
-        <div class="text-center clamp-size-top box-shadow">
-            <p class="">G</p>
-        </div>
-        <div class="text-center clamp-size-top box-shadow">
-            <p class="">O</p>
-        </div>
-    </div>
-</div>
+</body>
