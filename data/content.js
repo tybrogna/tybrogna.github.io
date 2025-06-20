@@ -174,7 +174,7 @@ const filedata = {
         '<a>Brogna, Tyler - Resume.pdf<a>PDF Resume',
         '<a>./fullresume.html<a>HTML Resume',
         '<a>https://github.com/tybrogna<a>Github',
-        '<a>https://www.linkedin.com/in/tyler-brogna-43468683/<a>LinkedIn',
+        '<a>https://www.linkedin.com/in/tyler-brogna<a>LinkedIn',
     ],
     "credits" : [
         '<a>https://www.kreativekorp.com/software/fonts/apple2/<a>KreativeKorp Ultimate Apple II Font, used under KREATIVE SOFTWARE RELAY FONTS FREE USE LICENSE version 1.2f',

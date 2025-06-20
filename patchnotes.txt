@@ -1,3 +1,8 @@
+20 Jun 2025
+	Been a while!
+	Updating resume (small update honestly)
+	Adding a little copy button to the github/linkedin links for my conveinence
+
 16 Aug 2024
 	Fixed bug with short names overwriting each other
 

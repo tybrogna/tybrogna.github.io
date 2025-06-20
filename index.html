@@ -396,6 +396,9 @@
                         link.href = ele.substring(3, ele.indexOf("<a>", 3))
                         cjDiv.appendChild(link)
                         await depositText(link, ele.substring(ele.indexOf("<a>", 3) + 3))
+                        if (! link.href.startsWith('javascript')) {
+                            await appendCopySymbol(cjDiv, link.href)
+                        }
                     } else if (ele.slice(0, 3) === '<t>') {
                         cjDiv.classList.add('terminal-title-text')
                         await depositText(cjDiv, ele.substring(3))
@@ -434,6 +437,17 @@
                         await delay(computerSpeed)
                     }
                 }
+            }
+
+            async function appendCopySymbol(location, copyableText) {
+                let copySymbol = eleCreator("img", "", "mx-2")
+                copySymbol.src = "./img/copy.svg"
+                copySymbol.style = "cursor: pointer;"
+                location.appendChild(copySymbol)
+                copySymbol.addEventListener("click", () => {
+                    console.log(copyableText)
+                    navigator.clipboard.writeText(copyableText)
+                })
             }
 
             async function createLink(location, text, command) {
