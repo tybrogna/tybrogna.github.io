@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+ <script
+    src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+    crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="js/nominees.2025.js"></script>
+<style>
+
+    
+    body {
+        background-color: #3B1E54;
+    }
+
+    .shell {
+        height: 100vh;
+        background-color: #9B7EBD;
+    }
+
+    .selectable-zone {
+        /* background-color: #CB9DF0; */
+        cursor: pointer;
+    }
+
+    .selected { 
+        background-color: #CB9DF0;
+    }
+
+    /* I stole this from w3schools
+     * https://www.w3schools.com/howto/howto_css_switch.asp
+     */
+    /* The switch - the box around the slider */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .15s;
+        transition: .15s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        /* border-radius: 5% 25% 5% 25%; */
+        background-color: white;
+        -webkit-transition: .15s;
+        transition: .15s;
+    }
+
+    input:checked + .slider {
+        background-color: #3B1E54;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #3B1E54;
+    }
+
+    input:checked + .slider:before {
+        border-radius: 25% 0% 25% 0%;
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    /* .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }  */
+</style>
+<script>
+
+        // let games = [
+        //     { "id": 1, "text": "The Legend of Zelda: Tears of the Kingdom", notable: false},
+        //     { "id": 2, "text": "Final Fantasy XVI", notable: true },
+        //     { "id": 3, "text": "Hogwarts Legacy", notable: false },
+        //     { "id": 4, "text": "God of War Ragnarök", notable: true },
+        //     { "id": 5, "text": "Elden Ring", notable: true }
+        // ]
+    let selectedZone = null
+    let filteredGames = games.filter(game => game.notable)
+
+    window.onload = () => {
+        $('.js-example-basic-single').select2({
+            data: games,
+            dropdownAutoWidth: true,
+            width: '50%',
+            height: '30px',
+            // thx copilot
+            // sorter: (data) => {
+            //     return data.sort((a, b) => {
+            //         if (a.notable == b.notable) {
+            //             return a.text.localeCompare(b.text);
+            //         }
+            //         return a.notable ? -1 : 1;
+            //     });
+            // },
+        })
+
+        document.querySelectorAll('.selectable-zone').forEach(zone => {
+            zone.addEventListener('click', (e) => zoneSelect(e))
+        })
+    }
+
+    function showNotableOnly(e) {
+        let checked = e.target.checked
+        let select = $('.js-example-basic-single')
+        select.empty()
+
+        
+        select.select2({
+            data: filteredGames,
+            dropdownAutoWidth: true,
+            width: '50%',
+            height: '30px',
+        })
+    }
+
+    function zoneSelect(e) {
+        let target = e.target
+        while (!target.classList.contains('selectable-zone')) {
+            target = target.parentElement
+        }
+
+        target.classList.add('selected')
+        selectedZone = target.id
+        document.querySelectorAll('.selectable-zone').forEach(zone => {
+            if (zone != target) {
+                zone.classList.remove('selected')
+            }
+        })
+    }
+
+    // TODO: Fix this ai shit
+    function addToZone(game) {
+        if (!selectedZone) {
+            return
+        }
+
+        let zone = document.getElementById(selectedZone)
+        let gameElem = document.createElement('div')
+        gameElem.innerText = game.text
+        zone.appendChild(gameElem)
+    }
+</script>
+<body>
+    <div id="main" class="container widener">
+        <div class="shell pl-5 pr-5">
+            <div>
+                <select class="js-example-basic-single form-control" name="gameList" data-placeholder="Select ...">
+                    <option></option>
+                </select>
+                <span>
+                    <span>Only show notable games</span>
+                    <label class="switch">
+                        <input type="checkbox" onchange="showNotableOnly">
+                        <span class="slider"></span>
+                    </label>
+                </span>
+            </div>
+            <div class="row">
+                <div id='goty' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Gmae of the Year</h2>
+                    <input type="area" />
+                </div>
+                <div id='direction' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Game Direction</h2>
+                </div>
+                <div id='narrative' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Narrative</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div id='art' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Art Direction</h2>
+                </div>
+                <div id='ost' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Score and Music</h2>
+                </div>
+                <div id='audio' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Audio Design</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div id='impact' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Games for Impact</h2>
+                </div>
+                <div id='indie' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Independent Game</h2>
+                </div>
+                <div id='debut' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Debut Indie Game</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div id='mobile' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Mobile Game</h2>
+                </div>
+                <div id='action' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Action Game</h2>
+                </div>
+                <div id='actadv' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Action / Adventure Game</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div id='rpg' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Role Playing Game</h2>
+                </div>
+                <div id='fight' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Fighting Game</h2>
+                </div>
+                <div id='family' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Family Game</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div id='sim' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Strategy / Simulation Game</h2>
+                </div>
+                <div id='sports' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Sports / Racing Game</h2>
+                </div>
+                <div id='multiplayer' class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Best Multiplayer Game</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div id="Player's Voice" class="col-4 selectable-zone" onclick="zoneSelect">
+                    <h2>Player's Voice</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
