@@ -1,7 +1,7 @@
 let games = [
     {'id': 0, 'text': 'NOVEMBER', 'notable': false},
     {'id': 1, 'text': '----------------', 'notable': false},
-    {'id': 2, 'text': 'Farmagia', 'notable': false},
+    {'id': 2, 'text': 'Farmagia', 'notable': true},
     {'id': 3, 'text': 'Homichiper', 'notable': false},
     {'id': 4, 'text': 'RATSHAKER', 'notable': false},
     {'id': 5, 'text': 'Blackthorn Arena: Reforged', 'notable': false},

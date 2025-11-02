@@ -6,29 +6,49 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
- <script
+<script
     src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
     crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
     rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="js/nominees.2025.js"></script>
+<script src="./data/nominees.2025.js"></script>
+<script src="./js/functionhider.js"></script>
 <style>
-
-    
     body {
         background-color: #3B1E54;
     }
 
     .shell {
-        height: 100vh;
+        min-height: 100vh;
+        background-color: #9B7EBD;
+    }
+
+    .select2-container {
+        z-index: 1337;
+    }
+
+    .game-list-bar {
+        position: sticky;
+        top: 0;
+        z-index: 1337;
         background-color: #9B7EBD;
     }
 
     .selectable-zone {
         /* background-color: #CB9DF0; */
         cursor: pointer;
+    }
+
+    .game-cache{
+        width: 100%;
+        background-color: #CB9DF0;
+    }
+
+    .lock-cache {
+        width: 100%;
+        background-color: #CB9DF0;
     }
 
     .selected { 
@@ -94,66 +114,64 @@
         transform: translateX(26px);
     }
 
-    /* Rounded sliders */
-    /* .slider.round {
-        border-radius: 34px;
-    }
-
-    .slider.round:before {
-        border-radius: 50%;
-    }  */
 </style>
 <script>
 
-        // let games = [
-        //     { "id": 1, "text": "The Legend of Zelda: Tears of the Kingdom", notable: false},
-        //     { "id": 2, "text": "Final Fantasy XVI", notable: true },
-        //     { "id": 3, "text": "Hogwarts Legacy", notable: false },
-        //     { "id": 4, "text": "God of War Ragnarök", notable: true },
-        //     { "id": 5, "text": "Elden Ring", notable: true }
-        // ]
     let selectedZone = null
     let filteredGames = games.filter(game => game.notable)
-
-    window.onload = () => {
-        $('.js-example-basic-single').select2({
-            data: games,
+    let getSelect2Options = (isOnlyNotable) => {
+        let data = isOnlyNotable ? filteredGames : games
+        let placeholder = isOnlyNotable ? "Select Notable Game ..." : "Select Game ..."
+        return {
+            data: data,
             dropdownAutoWidth: true,
+            placeholder: placeholder,
             width: '50%',
-            height: '30px',
-            // thx copilot
-            // sorter: (data) => {
-            //     return data.sort((a, b) => {
-            //         if (a.notable == b.notable) {
-            //             return a.text.localeCompare(b.text);
-            //         }
-            //         return a.notable ? -1 : 1;
-            //     });
-            // },
-        })
-
-        document.querySelectorAll('.selectable-zone').forEach(zone => {
-            zone.addEventListener('click', (e) => zoneSelect(e))
-        })
+            height: '40%',
+        }
     }
 
-    function showNotableOnly(e) {
-        let checked = e.target.checked
-        let select = $('.js-example-basic-single')
-        select.empty()
+    window.onload = () => {
+        let checked = document.querySelector('#notable-box').checked
+        let opts = getSelect2Options(checked)
+        $('.list').select2(opts)
 
-        
-        select.select2({
-            data: filteredGames,
-            dropdownAutoWidth: true,
-            width: '50%',
-            height: '30px',
+        document.querySelectorAll('.selectable-zone').forEach(zone => {
+            zone.addEventListener('click', e => zoneSelect(e))
         })
+
+        document.querySelectorAll('input').forEach(input => {
+            if (input.type != "button") {
+                return
+            }
+
+            if (input.value == "+") {
+                input.addEventListener('click', addToCache)
+            }
+
+            if (input.value == "-") {
+                input.addEventListener('click', removeFromCache)
+            }
+        })
+
+        document.querySelector('#notable-box').addEventListener('change', toggleNotable)
+
+        fillFromLocalStorage()
+
+    }
+
+    function toggleNotable(e) {
+        let opts = getSelect2Options(e.target.checked)
+        $('.list').empty().select2(opts)
+        $('.list').val(null).trigger('change')
     }
 
     function zoneSelect(e) {
         let target = e.target
         while (!target.classList.contains('selectable-zone')) {
+            if (target.classList.contains('lock-cache')) {
+                target.querySelectorAll('option').forEach(opt => opt.selected = false)
+            }
             target = target.parentElement
         }
 
@@ -166,46 +184,581 @@
         })
     }
 
-    // TODO: Fix this ai shit
-    function addToZone(game) {
-        if (!selectedZone) {
-            return
+    function addToCache(e) {
+        let target = e.target
+        while (!target.classList.contains('selectable-zone')) {
+            target = target.parentElement
         }
-
-        let zone = document.getElementById(selectedZone)
-        let gameElem = document.createElement('div')
-        gameElem.innerText = game.text
-        zone.appendChild(gameElem)
+        target = target.querySelector('.game-cache')
+        if (target.querySelector('option').innerText == "Your choices ...") {
+            target.querySelector('option').innerText = $('.list').find(':selected').text()
+        } else {
+            let opt = document.createElement('option')
+            opt.innerText = $('.list').find(':selected').text()
+            target.appendChild(opt)
+        }
+        updateLocalStorage()
     }
+
+    function removeFromCache(e) {
+        let target = e.target
+        while (!target.classList.contains('selectable-zone')) {
+            target = target.parentElement
+        }
+        target = target.querySelector('.game-cache')
+        let options = target.querySelectorAll('option')
+        let numberOfOptions = options.length
+
+        for (let a = 0; a < options.length; a++) {
+            if (!options[a].selected) {
+                continue
+            }
+            if (numberOfOptions == 1) {
+                options[a].innerText = "Your choices ..."
+                break
+            }
+            target.removeChild(options[a])
+            numberOfOptions -= 1
+        }
+        updateLocalStorage()
+    }
+
+    function updateLocalStorage() {
+        let caches = document.querySelectorAll('.game-cache')
+        for (let a = 0; a < caches.length; a++) {
+            let vals = []
+            Array.from(caches[a].options).forEach(opt => {
+                if (opt.innerText != 'Your choices ...') {
+                    vals.push(opt.innerText)
+                }
+            })
+            localStorage.setItem(`cache${a}`, JSON.stringify(vals))
+        }
+    }
+
+    function fillFromLocalStorage() {
+        let caches = document.querySelectorAll('.game-cache')
+        for (let a = 0; a < caches.length; a++) {
+            let jsonVals = localStorage.getItem(`cache${a}`)
+            if (!jsonVals) {
+                continue
+            }
+            let vals = JSON.parse(jsonVals)
+            vals.forEach(optText => {
+                if (caches[a].querySelector('option').innerText == "Your choices ...") {
+                    caches[a].querySelector('option').innerText = optText
+                } else {
+                    let opt = document.createElement('option')
+                    opt.innerText = optText
+                    caches[a].appendChild(opt)
+                }
+            })
+        }
+    }
+
 </script>
 <body>
-    <div id="main" class="container widener">
+    <div id="main" class="container px-0 widener">
         <div class="shell pl-5 pr-5">
-            <div>
-                <select class="js-example-basic-single form-control" name="gameList" data-placeholder="Select ...">
+            <div class="navbar navbar-expand game-list-bar">
+                <select class="list form-control" name="gameList">
                     <option></option>
                 </select>
                 <span>
                     <span>Only show notable games</span>
                     <label class="switch">
-                        <input type="checkbox" onchange="showNotableOnly">
+                        <input id='notable-box' type="checkbox">
                         <span class="slider"></span>
                     </label>
                 </span>
             </div>
-            <div class="row">
-                <div id='goty' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Gmae of the Year</h2>
-                    <input type="area" />
+            <div class="d-flex row mb-3">
+                <div id='goty' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Gmae of the Year</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
                 </div>
-                <div id='direction' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Game Direction</h2>
-                </div>
-                <div id='narrative' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Narrative</h2>
+                <div id='direction' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Game Direction</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="d-flex row mb-3">
+                <div id='art' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Art Direction</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+                <div id='ost' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Score and Music</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex row mb-3">
+                <div id='audio' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Audio Design</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+                <div id='impact' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Games for Impact</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex row mb-3">
+                <div id='indie' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Independent Game</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+                <div id='debut' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Debut Indie Game</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex row mb-3">
+                <div id='mobile' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Mobile Game</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+                <div id='action' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Action Game</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex row mb-3">
+                <div id='actadv' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Action / Adventure Game</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+                <div id='rpg' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Role Playing Game</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex row mb-3">
+                <div id='fight' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Fighting Game</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+                <div id='family' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Family Game</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex row mb-3">
+                <div id='stasim' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Strategy / Simulation Game</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+                <div id='sports' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Sports / Racing Game</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex row mb-3">
+                <div id='multi' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Best Multiplayer Game</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+                <div id='china' class="col-md-12 col-lg-6 selectable-zone">
+                    <div class="d-flex justify-content-center">
+                        <h2>Player's Voice</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4 pl-0 pr-1">
+                            <select class='lock-cache' multiple size="6">
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                                <option >???</option>
+                            </select>    
+                        </div>
+                        <div class="col-6 px-0">
+                            <select class='game-cache' multiple size="6" >
+                                <option>Your choices ...</option>
+                            </select>    
+                        </div>
+                        <div class="col-2 pl-1 pr-0">
+                            <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
+                            <input type="button" class="w-75 h-25" value="-" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row">
                 <div id='art' class="col-4 selectable-zone" onclick="zoneSelect">
                     <h2>Best Art Direction</h2>
                 </div>
@@ -264,7 +817,7 @@
                 <div id="Player's Voice" class="col-4 selectable-zone" onclick="zoneSelect">
                     <h2>Player's Voice</h2>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </body>
