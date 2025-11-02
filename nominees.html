@@ -43,11 +43,13 @@
 
     .game-cache{
         width: 100%;
+        overflow-y: auto;
         background-color: #CB9DF0;
     }
 
     .lock-cache {
         width: 100%;
+        overflow-y: auto;
         background-color: #CB9DF0;
     }
 
@@ -137,7 +139,7 @@
         $('.list').select2(opts)
 
         document.querySelectorAll('.selectable-zone').forEach(zone => {
-            zone.addEventListener('click', e => zoneSelect(e))
+            zone.addEventListener('click', zoneSelect)
         })
 
         document.querySelectorAll('input').forEach(input => {
@@ -145,12 +147,13 @@
                 return
             }
 
+            // TODO (for 2026), async await these
             if (input.value == "+") {
-                input.addEventListener('click', addToCache)
+                input.addEventListener('click', async (e) => { addToCacheEvent(e) })
             }
 
             if (input.value == "-") {
-                input.addEventListener('click', removeFromCache)
+                input.addEventListener('click', removeFromCacheEvent)
             }
         })
 
@@ -184,42 +187,28 @@
         })
     }
 
-    function addToCache(e) {
+    function addToCacheEvent(e) {
+        let gameToAdd = $('.list').find(':selected').text()
+        if (gameToAdd == '') {
+            return
+        }
+
         let target = e.target
         while (!target.classList.contains('selectable-zone')) {
             target = target.parentElement
         }
         target = target.querySelector('.game-cache')
-        if (target.querySelector('option').innerText == "Your choices ...") {
-            target.querySelector('option').innerText = $('.list').find(':selected').text()
-        } else {
-            let opt = document.createElement('option')
-            opt.innerText = $('.list').find(':selected').text()
-            target.appendChild(opt)
-        }
+        addToCache(target, $('.list').find(':selected').text())
         updateLocalStorage()
     }
 
-    function removeFromCache(e) {
+    function removeFromCacheEvent(e) {
         let target = e.target
         while (!target.classList.contains('selectable-zone')) {
             target = target.parentElement
         }
         target = target.querySelector('.game-cache')
-        let options = target.querySelectorAll('option')
-        let numberOfOptions = options.length
-
-        for (let a = 0; a < options.length; a++) {
-            if (!options[a].selected) {
-                continue
-            }
-            if (numberOfOptions == 1) {
-                options[a].innerText = "Your choices ..."
-                break
-            }
-            target.removeChild(options[a])
-            numberOfOptions -= 1
-        }
+        clearCache(target)
         updateLocalStorage()
     }
 
@@ -244,16 +233,57 @@
                 continue
             }
             let vals = JSON.parse(jsonVals)
+            if (vals.length == 0) {
+                continue
+            }
             vals.forEach(optText => {
-                if (caches[a].querySelector('option').innerText == "Your choices ...") {
-                    caches[a].querySelector('option').innerText = optText
-                } else {
-                    let opt = document.createElement('option')
-                    opt.innerText = optText
-                    caches[a].appendChild(opt)
-                }
+                addToCache(caches[a], optText)
             })
         }
+    }
+
+    function addToCache(cache, val) {
+        let options = cache.querySelectorAll('option')
+        if (options.length == 6) {
+            return
+        }
+
+        if (options[0].innerText == "Your choices ...") {
+            options[0].innerText = val
+        } else {
+            let opt = document.createElement('option')
+            opt.innerText = val
+            cache.appendChild(opt)
+        }
+    }
+
+    function clearDisplayedGames() {
+        let caches = document.querySelectorAll('.game-cache')
+        for (let a = 0; a < caches.length; a++) {
+            clearCache(caches[a], true)
+        }
+    }
+
+    function clearCache(cache, clearAll=false) {
+        let options = cache.querySelectorAll('option')
+        let numberOfOptions = options.length
+        for (let a = 0; a < options.length; a++) {
+            if (!clearAll && !options[a].selected) {
+                continue
+            }
+            if (numberOfOptions == 1) {
+                options[a].innerText = "Your choices ..."
+                break
+            }
+            cache.removeChild(options[a])
+            numberOfOptions -= 1
+        }
+    }
+
+    function reset() {
+        console.log('resetting')
+        localStorage.clear()
+        clearDisplayedGames()
     }
 
 </script>
@@ -270,6 +300,9 @@
                         <input id='notable-box' type="checkbox">
                         <span class="slider"></span>
                     </label>
+                </span>
+                <span class="ml-2">
+                    <input type="button" value="Reset" onClick="reset()"/>
                 </span>
             </div>
             <div class="d-flex row mb-3">
