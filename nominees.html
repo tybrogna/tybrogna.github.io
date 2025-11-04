@@ -20,6 +20,37 @@
         background-color: #3B1E54;
     }
 
+    .cache-line {
+        width: 100%;
+        border-top-style: hidden;
+        border-right-style: hidden;
+        border-left-style: hidden;
+        border-bottom-style: hidden;
+        background-color: #CB9DF0;
+        outline: none;
+        caret-color: transparent;
+    }
+
+    .cache-top {
+        border-top-style: inset;
+        border-left-style: inset;
+        border-right-style: inset;
+    }
+    .cache-middle {
+        border-left-style: inset;
+        border-right-style: inset;
+    }
+    .cache-bottom {
+        border-left-style: inset;
+        border-right-style: inset;
+        border-bottom-style: inset;
+    }
+
+    .category-icon {
+        height: 40px;
+        margin-right: 10px;
+    }
+
     .shell {
         min-height: 100vh;
         background-color: #9B7EBD;
@@ -121,7 +152,7 @@
 
     let selectedZone = null
     let filteredGames = games.filter(game => game.notable)
-    let getSelect2Options = (isOnlyNotable) => {
+    let getSelect2Options = (isOnlyNotable=false) => {
         let data = isOnlyNotable ? filteredGames : games
         let placeholder = isOnlyNotable ? "Select Notable Game ..." : "Select Game ..."
         return {
@@ -289,7 +320,12 @@
 </script>
 <body>
     <div id="main" class="container px-0 widener">
-        <div class="shell pl-5 pr-5">
+        <div class="shell pl-5 pr-5"> 
+            <div>
+                <h1>
+                    2024 Game Awards Nominee Guesser
+                </h1>
+            </div>
             <div class="navbar navbar-expand game-list-bar">
                 <select class="list form-control" name="gameList">
                     <option></option>
@@ -308,10 +344,17 @@
             <div class="d-flex row mb-3">
                 <div id='goty' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/geoff.png" class="category-icon" />
                         <h2>Gmae of the Year</h2>
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
+                            <!-- <input type="text" class="cache-line cache-top" value="???" readonly>
+                            <input type="text" class="cache-line cache-middle" value="???" readonly>
+                            <input type="text" class="cache-line cache-middle" value="???" readonly>
+                            <input type="text" class="cache-line cache-middle" value="???" readonly>
+                            <input type="text" class="cache-line cache-middle" value="???" readonly>
+                            <input type="text" class="cache-line cache-bottom" value="???" readonly> -->
                             <select class='lock-cache' multiple size="6">
                                 <option >???</option>
                                 <option >???</option>
@@ -322,6 +365,13 @@
                             </select>    
                         </div>
                         <div class="col-6 px-0">
+                            <!-- <input type="text" class="cache-line cache-top" value="Your Choices ..." readonly>
+                            <input type="text" class="cache-line cache-middle" value="" readonly>
+                            <input type="text" class="cache-line cache-middle" value="" readonly>
+                            <input type="text" class="cache-line cache-middle" value="" readonly>
+                            <input type="text" class="cache-line cache-middle" value="" readonly>
+                            <input type="text" class="cache-line cache-bottom" value="" readonly> -->
+
                             <select class='game-cache' multiple size="6" >
                                 <option>Your choices ...</option>
                             </select>    
@@ -334,6 +384,7 @@
                 </div>
                 <div id='direction' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/direction.png" class="category-icon" />
                         <h2>Best Game Direction</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -362,6 +413,7 @@
             <div class="d-flex row mb-3">
                 <div id='art' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/art.png" class="category-icon" />
                         <h2>Best Art Direction</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -388,6 +440,7 @@
                 </div>
                 <div id='ost' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/ost.png" class="category-icon" />
                         <h2>Best Score and Music</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -416,6 +469,7 @@
             <div class="d-flex row mb-3">
                 <div id='audio' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/audio.png" class="category-icon" />
                         <h2>Best Audio Design</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -442,6 +496,7 @@
                 </div>
                 <div id='impact' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/impact.png" class="category-icon" />
                         <h2>Games for Impact</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -470,6 +525,7 @@
             <div class="d-flex row mb-3">
                 <div id='indie' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/indie.png" class="category-icon" />
                         <h2>Best Independent Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -496,6 +552,7 @@
                 </div>
                 <div id='debut' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/bingo-24/boom.jpg" class="category-icon" />
                         <h2>Best Debut Indie Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -524,6 +581,7 @@
             <div class="d-flex row mb-3">
                 <div id='mobile' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/mobile.png" class="category-icon" />
                         <h2>Best Mobile Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -550,6 +608,7 @@
                 </div>
                 <div id='action' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/action.png" class="category-icon" />
                         <h2>Best Action Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -578,6 +637,7 @@
             <div class="d-flex row mb-3">
                 <div id='actadv' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/actadv.png" class="category-icon" />
                         <h2>Best Action / Adventure Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -604,6 +664,7 @@
                 </div>
                 <div id='rpg' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/rpg.png" class="category-icon" />
                         <h2>Best Role Playing Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -620,7 +681,7 @@
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
                                 <option>Your choices ...</option>
-                            </select>    
+                            </select>
                         </div>
                         <div class="col-2 pl-1 pr-0">
                             <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
@@ -632,6 +693,7 @@
             <div class="d-flex row mb-3">
                 <div id='fight' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/fight.png" class="category-icon" />
                         <h2>Best Fighting Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -648,7 +710,7 @@
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
                                 <option>Your choices ...</option>
-                            </select>    
+                            </select>
                         </div>
                         <div class="col-2 pl-1 pr-0">
                             <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
@@ -658,6 +720,7 @@
                 </div>
                 <div id='family' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/family.png" class="category-icon" />
                         <h2>Best Family Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -669,12 +732,12 @@
                                 <option >???</option>
                                 <option >???</option>
                                 <option >???</option>
-                            </select>    
+                            </select>
                         </div>
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
                                 <option>Your choices ...</option>
-                            </select>    
+                            </select>
                         </div>
                         <div class="col-2 pl-1 pr-0">
                             <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
@@ -686,6 +749,7 @@
             <div class="d-flex row mb-3">
                 <div id='stasim' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/sim.png" class="category-icon" />
                         <h2>Best Strategy / Simulation Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -697,7 +761,7 @@
                                 <option >???</option>
                                 <option >???</option>
                                 <option >???</option>
-                            </select>    
+                            </select>
                         </div>
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
@@ -712,6 +776,7 @@
                 </div>
                 <div id='sports' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/sports.png" class="category-icon" />
                         <h2>Best Sports / Racing Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -740,6 +805,7 @@
             <div class="d-flex row mb-3">
                 <div id='multi' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/multi.png" class="category-icon" />
                         <h2>Best Multiplayer Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -766,6 +832,7 @@
                 </div>
                 <div id='china' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <img src="./img/nominees-decoration/voice.png" class="category-icon" />
                         <h2>Player's Voice</h2>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -791,66 +858,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="row">
-                <div id='art' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Art Direction</h2>
-                </div>
-                <div id='ost' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Score and Music</h2>
-                </div>
-                <div id='audio' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Audio Design</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div id='impact' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Games for Impact</h2>
-                </div>
-                <div id='indie' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Independent Game</h2>
-                </div>
-                <div id='debut' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Debut Indie Game</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div id='mobile' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Mobile Game</h2>
-                </div>
-                <div id='action' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Action Game</h2>
-                </div>
-                <div id='actadv' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Action / Adventure Game</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div id='rpg' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Role Playing Game</h2>
-                </div>
-                <div id='fight' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Fighting Game</h2>
-                </div>
-                <div id='family' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Family Game</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div id='sim' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Strategy / Simulation Game</h2>
-                </div>
-                <div id='sports' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Sports / Racing Game</h2>
-                </div>
-                <div id='multiplayer' class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Best Multiplayer Game</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div id="Player's Voice" class="col-4 selectable-zone" onclick="zoneSelect">
-                    <h2>Player's Voice</h2>
-                </div>
-            </div> -->
         </div>
     </div>
 </body>
