@@ -69,7 +69,7 @@
 
     .selectable-zone {
         /* background-color: #CB9DF0; */
-        cursor: pointer;
+        /* cursor: pointer; */
     }
 
     .game-cache{
@@ -191,7 +191,9 @@
         document.querySelector('#notable-box').addEventListener('change', toggleNotable)
 
         fillFromLocalStorage()
-
+        if (localStorage['locked'] == 'true') {
+            lock()
+        }
     }
 
     function toggleNotable(e) {
@@ -317,6 +319,35 @@
         clearDisplayedGames()
     }
 
+    function lockButtonEnter(e) {
+        e.target.style.color = 'red'
+        e.target.style.backgroundColor = 'lightyellow'
+    }
+
+    function lockButtonLeave(e) {
+        e.target.style.color = 'black'
+        e.target.style.backgroundColor = 'white'
+    }
+
+    function lock() {
+        let inputs = document.querySelectorAll('input')
+        // buttons.filter(btn => btn.type == "button")
+        inputs.forEach(btn => {
+            if (btn.type == 'button')
+                btn.disabled = true
+        })
+        localStorage['locked'] = 'true'
+    }
+
+    function unlock() {
+        console.log('no one will know, and no greater power judges your actions. but youll know, and i hope one day you will judge yourself.')
+        let inputs = document.querySelectorAll('input')
+        inputs.forEach(btn => {
+            if (btn.type == 'button')
+                btn.disabled = false
+        })
+    }
+
 </script>
 <body>
     <div id="main" class="container px-0 widener">
@@ -339,6 +370,11 @@
                 </span>
                 <span class="ml-2">
                     <input type="button" value="Reset" onClick="reset()"/>
+                </span>
+                <span class="ml-5">
+                    <!-- come on man don't cheat. but if you really gotta, just call unlock() in the console. -->
+                    <!-- like if you're gonna cheat, dont waste time doing it manually.  -->
+                    <input type="button" value="L O C K" onmouseleave="lockButtonLeave(event)" onmouseenter="lockButtonEnter(event)" onClick="lock()"/>
                 </span>
             </div>
             <div class="d-flex row mb-3">
@@ -750,7 +786,7 @@
                 <div id='stasim' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
                         <img src="./img/nominees-decoration/sim.png" class="category-icon" />
-                        <h2>Best Strategy / Simulation Game</h2>
+                        <h2>Best Strategy / Sim Game</h2>
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
@@ -858,6 +894,7 @@
                     </div>
                 </div>
             </div>
+            <br />
         </div>
     </div>
 </body>
