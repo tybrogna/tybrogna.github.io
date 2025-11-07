@@ -149,7 +149,7 @@
 
 </style>
 <script>
-
+    let isMobile = checkMobile()
     let selectedZone = null
     let filteredGames = games.filter(game => game.notable)
     let getSelect2Options = (isOnlyNotable=false) => {
@@ -172,6 +172,12 @@
         document.querySelectorAll('.selectable-zone').forEach(zone => {
             zone.addEventListener('click', zoneSelect)
         })
+
+        if (isMobile) {
+            document.querySelectorAll('.selectable-zone').forEach(
+                zone => zone.classList.remove('col-lg-6')
+            )
+        }
 
         document.querySelectorAll('input').forEach(input => {
             if (input.type != "button") {
@@ -350,6 +356,8 @@
 
 </script>
 <body>
+    <title>Nominees: The Game Awards 2025</title>
+    <link rel="icon" href="/img/favicon-bingo.ico" />
     <div id="main" class="container px-0 widener">
         <div class="shell pl-5 pr-5"> 
             <div>
@@ -361,7 +369,7 @@
                 <select class="list form-control" name="gameList">
                     <option></option>
                 </select>
-                <span>
+                <span class="ml-2">
                     <span>Only show notable games</span>
                     <label class="switch">
                         <input id='notable-box' type="checkbox">
