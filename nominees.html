@@ -197,6 +197,8 @@
         document.querySelector('#notable-box').addEventListener('change', toggleNotable)
 
         fillFromLocalStorage()
+        alphabetizeOptions()
+        highlightCorrectGuesses()
         if (localStorage['locked'] == 'true') {
             lock()
         }
@@ -319,6 +321,36 @@
         }
     }
 
+    function alphabetizeOptions() {
+        let caches = document.querySelectorAll('.game-cache')
+        for (let a = 0; a < caches.length; a++) {
+            let options = Array.from(caches[a].querySelectorAll('option'))
+            let sortedTexts = options.map(opt => opt.innerText).sort()
+            caches[a].innerHTML = ''
+            sortedTexts.forEach(val => {
+                let opt = document.createElement('option')
+                opt.innerText = val
+                caches[a].appendChild(opt)
+            })
+        }
+    }
+
+    function highlightCorrectGuesses() {
+        let guessList = document.querySelectorAll('.game-cache')
+        let nomList = document.querySelectorAll('.lock-cache')
+        for (let a = 0; a < guessList.length; a++) {
+            let guesses = guessList[a]
+            let noms = Array.from(nomList[a].querySelectorAll('option')).map(opt => opt.innerText)
+
+            guesses.querySelectorAll('option').forEach(g => {
+                if (noms.includes(g.innerText)) {
+                    g.style.fontWeight = 'bold'
+                    g.style.backgroundColor = '#eee'
+                }
+            })
+        }
+    }
+
     function reset() {
         console.log('resetting')
         localStorage.clear()
@@ -393,29 +425,16 @@
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
-                            <!-- <input type="text" class="cache-line cache-top" value="???" readonly>
-                            <input type="text" class="cache-line cache-middle" value="???" readonly>
-                            <input type="text" class="cache-line cache-middle" value="???" readonly>
-                            <input type="text" class="cache-line cache-middle" value="???" readonly>
-                            <input type="text" class="cache-line cache-middle" value="???" readonly>
-                            <input type="text" class="cache-line cache-bottom" value="???" readonly> -->
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
+                                <option >Clair Obscur: Expedition 33</option>
+                                <option >Death Stranding 2: On the Beach</option>
+                                <option >Donkey Kong: Banaza</option>
+                                <option >Hades II</option>
+                                <option >Hollow Knight: Silksong</option>
+                                <option >Kingdom Come: Deliverance II</option>
                             </select>    
                         </div>
                         <div class="col-6 px-0">
-                            <!-- <input type="text" class="cache-line cache-top" value="Your Choices ..." readonly>
-                            <input type="text" class="cache-line cache-middle" value="" readonly>
-                            <input type="text" class="cache-line cache-middle" value="" readonly>
-                            <input type="text" class="cache-line cache-middle" value="" readonly>
-                            <input type="text" class="cache-line cache-middle" value="" readonly>
-                            <input type="text" class="cache-line cache-bottom" value="" readonly> -->
-
                             <select class='game-cache' multiple size="6" >
                                 <option>Your choices ...</option>
                             </select>    
@@ -428,18 +447,24 @@
                 </div>
                 <div id='direction' class="col-md-12 col-lg-6 selectable-zone">
                     <div class="d-flex justify-content-center">
+                        <!-- <div class="d-flex justify-content-center">
+                            <img src="./img/nominees-decoration/direction.png" class="category-icon" />
+                            <h2>Best Game Direction</h2>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            correctness 69%
+                        </div> -->
                         <img src="./img/nominees-decoration/direction.png" class="category-icon" />
                         <h2>Best Game Direction</h2>
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
+                                <option >Clair Obscur: Expedition 33</option>
+                                <option >Death Stranding 2: On the Beach</option>
+                                <option >Ghost of Yotei</option>
+                                <option >Hades II</option>
+                                <option >Split Fiction</option>
                             </select>
                         </div>
                         <div class="col-6 px-0">
@@ -463,12 +488,11 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
+                                <option >Clair Obscur: Expedition 33</option>
+                                <option >Death Stranding 2: On the Beach</option>
+                                <option >Ghost of Yotei</option>
+                                <option >Hades II</option>
+                                <option >Hollow Knight: Silksong</option>
                             </select>    
                         </div>
                         <div class="col-6 px-0">
@@ -490,13 +514,12 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                            </select>    
+                                <option >Hollow Knight: Silksong</option>
+                                <option >Hades II</option>
+                                <option >Clair Obscur: Expedition 33</option>
+                                <option >Ghost of Yotei</option>
+                                <option >Death Stranding 2: On the Beach</option>
+                            </select>
                         </div>
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
@@ -519,12 +542,11 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
+                                <option >Battlefield 6</option>
+                                <option >Death Stranding 2: On the Beach</option>
+                                <option >Clair Obscur: Expedition 33</option>
+                                <option >Ghost of Yotei</option>
+                                <option >SILENT HILL f</option>
                             </select>    
                         </div>
                         <div class="col-6 px-0">
@@ -546,13 +568,12 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                            </select>    
+                                <option >Consume Me</option>
+                                <option >despelote</option>
+                                <option >Lost Records: Bloom & Rage</option>
+                                <option >South of Midnight</option>
+                                <option >Wanderstop</option>
+                            </select>
                         </div>
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
@@ -575,12 +596,12 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
+                                <option >Absolum</option>
+                                <option >BALL x PIT</option>
+                                <option >Blue Prince</option>
+                                <option >Clair Obscur: Expedition 33</option>
+                                <option >Hades II</option>
+                                <option >Hollow Knight: Silksong</option>
                             </select>    
                         </div>
                         <div class="col-6 px-0">
@@ -602,12 +623,11 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
+                                <option >Blue Prince</option>
+                                <option >Clair Obscur: Expedition 33</option>
+                                <option >despelote</option>
+                                <option >Dispatch</option>
+                                <option >Megabonk</option>
                             </select>    
                         </div>
                         <div class="col-6 px-0">
@@ -631,18 +651,17 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                            </select>    
+                                <option >Destiny: Rising</option>
+                                <option >Persona5: The Phantom X</option>
+                                <option >Sonic Rumble</option>
+                                <option >UmaMusume: Pretty Derby</option>
+                                <option >Wuthering Waves</option>
+                            </select>
                         </div>
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
                                 <option>Your choices ...</option>
-                            </select>    
+                            </select>
                         </div>
                         <div class="col-2 pl-1 pr-0">
                             <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
@@ -658,18 +677,17 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                            </select>    
+                                <option >Battlefield 6</option>
+                                <option >DOOM: The Dark Ages</option>
+                                <option >Hades II</option>
+                                <option >NINJA GAIDEN 4</option>
+                                <option >SHINOBI: Art of Vengance</option>
+                            </select>
                         </div>
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
                                 <option>Your choices ...</option>
-                            </select>    
+                            </select>
                         </div>
                         <div class="col-2 pl-1 pr-0">
                             <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
@@ -687,12 +705,12 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
+                                <option ></option>
+                                <option >Death Stranding 2: On the Beach</option>
+                                <option >Ghost of Yotei</option>
+                                <option >Indiana Jones and the Great Circle</option>
+                                <option >Hollow Knight: Silksong</option>
+                                <option >Split Fiction</option>
                             </select>    
                         </div>
                         <div class="col-6 px-0">
@@ -714,13 +732,12 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                            </select>    
+                                <option >Avowed</option>
+                                <option >Clair Obscur: Expedition 33</option>
+                                <option >Kingdom Come: Deliverance II</option>
+                                <option >The Outer Worlds 2</option>
+                                <option >Monster Hunter Wilds</option>
+                            </select>
                         </div>
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
@@ -743,13 +760,12 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                            </select>    
+                                <option >2XKO</option>
+                                <option >Capcom Fighting Collection 2</option>
+                                <option >FATAL FURY: City of the Wolves</option>
+                                <option >Mortal Kombat: Legacy Kollection</option>
+                                <option >Virtua Fighter 5 R.E.V.O. World Stage</option>
+                            </select> 
                         </div>
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
@@ -770,12 +786,12 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
+                                <option >Donkey Kong: Banaza</option>
+                                <option >LEGO® Party!</option>
+                                <option >LEGO® Voyagers</option>
+                                <option >Mario Kart World</option>
+                                <option >Sonic Racing: CrossWorlds</option>
+                                <option >Split Fiction</option>
                             </select>
                         </div>
                         <div class="col-6 px-0">
@@ -799,12 +815,12 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
+                                <option >The Alters</option>
+                                <option >FINAL FANTASY TACTICS - The Ivalice Chronicles</option>
+                                <option >Jurassic World Evolution 3</option>
+                                <option >Sid Meier’s Civilization VII</option>
+                                <option >Tempest Rising</option>
+                                <option >Two Point Museum</option>
                             </select>
                         </div>
                         <div class="col-6 px-0">
@@ -826,18 +842,17 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                            </select>    
+                                <option >EA SPORTS FC 26</option>
+                                <option >F1® 25</option>
+                                <option >Mario Kart World</option>
+                                <option >REMATCH</option>
+                                <option >Sonic Racing: CrossWorlds</option>
+                            </select>
                         </div>
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
                                 <option>Your choices ...</option>
-                            </select>    
+                            </select>
                         </div>
                         <div class="col-2 pl-1 pr-0">
                             <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
@@ -855,18 +870,17 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                                <option >???</option>
-                            </select>    
+                                <option >ARC Raiders</option>
+                                <option >Battlefield 6</option>
+                                <option >PEAK</option>
+                                <option >ELDEN RING NIGHTREIGN</option>
+                                <option >Split Fiction</option>
+                            </select>
                         </div>
                         <div class="col-6 px-0">
                             <select class='game-cache' multiple size="6" >
                                 <option>Your choices ...</option>
-                            </select>    
+                            </select>
                         </div>
                         <div class="col-2 pl-1 pr-0">
                             <input type="button" class="w-75 h-25 mb-3 mt-4" value="+" />
