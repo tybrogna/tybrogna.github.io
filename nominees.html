@@ -152,6 +152,7 @@
     let isMobile = checkMobile()
     let selectedZone = null
     let filteredGames = games.filter(game => game.notable)
+    let nomineesAvailable = true
     let getSelect2Options = (isOnlyNotable=false) => {
         let data = isOnlyNotable ? filteredGames : games
         let placeholder = isOnlyNotable ? "Select Notable Game ..." : "Select Game ..."
@@ -198,7 +199,9 @@
 
         fillFromLocalStorage()
         alphabetizeOptions()
-        highlightCorrectGuesses()
+        if (nomineesAvailable) {
+            calculateScore()
+        }
         if (localStorage['locked'] == 'true') {
             lock()
         }
@@ -335,20 +338,78 @@
         }
     }
 
-    function highlightCorrectGuesses() {
+    let nomineesGuessScoreTable = [0, 100, 51, 62, 73, 84, 95]
+    let unpopularMultiplierTable = [0, .05, .06, .07, .08, .09, .15]
+
+    function calculateScore() {
         let guessList = document.querySelectorAll('.game-cache')
         let nomList = document.querySelectorAll('.lock-cache')
+        let totalNominees = 0
+        let totalCorrect = 0
+        let totalScore = 0
+        let categoriesWithAtLeastOneGuess = 0
+        let filledGuessList = 0
+        let popularGames = getNomineeFrequencyList()
+
         for (let a = 0; a < guessList.length; a++) {
             let guesses = guessList[a]
             let noms = Array.from(nomList[a].querySelectorAll('option')).map(opt => opt.innerText)
+            if (noms.includes('???')) {
+                continue
+            }
+            let inCategory = noms.length
+            totalNominees += inCategory
+            let categoryCorrect = 0
+            let categoryScore = 0.
+            let categoryUnpopularMultiplier = 1.
+            filledGuessList += guesses.querySelectorAll('option').length > 4 ? 1 : 0
 
             guesses.querySelectorAll('option').forEach(g => {
                 if (noms.includes(g.innerText)) {
+                    categoryCorrect++
+                    totalCorrect++
                     g.style.fontWeight = 'bold'
                     g.style.backgroundColor = '#eee'
+
+                    if (!popularGames.includes(g.innerText)) {
+                        categoryUnpopularMultiplier += unpopularMultiplierTable[categoryCorrect]
+                    }
+
+                    categoryScore += nomineesGuessScoreTable[categoryCorrect]
                 }
             })
+
+            categoryScore *= categoryUnpopularMultiplier
+            categoriesWithAtLeastOneGuess += categoryCorrect > 0 ? 1 : 0
+            totalScore += categoryScore
         }
+
+        score += categoriesWithAtLeastOneGuess * 26
+        score += filledGuessList * 8
+
+        $('#score').text(Math.round(totalScore))
+        $('#percent').text(((totalCorrect / totalNominees * 100).toFixed(2) + '%'))
+    }
+
+    function getNomineeFrequencyList() {
+        let nomList = document.querySelectorAll('.lock-cache')
+        let nomsFrequencey = {}
+        for (let a = 0; a < nomList.length; a++) {
+            let noms = Array.from(nomList[a].querySelectorAll('option')).map(opt => opt.innerText)
+            noms.forEach(nom => {
+                if (!(nom in nomsFrequencey)) {
+                    nomsFrequencey[nom] = 0
+                }
+                nomsFrequencey[nom] += 1
+            })
+        }
+        let popularList = []
+        for (let [nom, frequency] of Object.entries(nomsFrequencey)) {
+            if (frequency >= 3 && nom != '???') {
+                popularList.push(nom)
+            }
+        }
+        return popularList
     }
 
     function reset() {
@@ -396,6 +457,12 @@
                 <h1>
                     2024 Game Awards Nominee Guesser
                 </h1>
+            </div>
+            <div>
+                <h3>
+                    <span>CORRECT: <span id="percent"></span></span>
+                    <span class="pl-3">SCORE: <span id="score"></span></span>
+                </h3>
             </div>
             <div class="navbar navbar-expand game-list-bar">
                 <select class="list form-control" name="gameList">
@@ -705,7 +772,6 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-4 pl-0 pr-1">
                             <select class='lock-cache' multiple size="6">
-                                <option ></option>
                                 <option >Death Stranding 2: On the Beach</option>
                                 <option >Ghost of Yotei</option>
                                 <option >Indiana Jones and the Great Circle</option>
