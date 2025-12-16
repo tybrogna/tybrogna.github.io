@@ -226,7 +226,7 @@
                 await createLink(document.querySelector("#options2"), 'Other', `LOAD ${getByValue(filenames, 'other')}`)
                 await createLink(document.querySelector("#options2"), 'Links', `LOAD ${getByValue(filenames, 'links')}`)
                 await createLink(document.querySelector("#options2"), 'List Commands', 'LIST')
-                await createLink(document.querySelector("#options2"), 'Credits', 'CREDITS')
+                await createLink(document.querySelector("#options2"), 'Credits', `LOAD ${getByValue(filenames, 'credits')}`)
                 await createLink(document.querySelector("#options2"), 'Full Resume HTML', 'RUN WEB cv')
                 await createLink(document.querySelector("#options2"), 'Full Resume PDF', 'RUN SAVE cv')
             }

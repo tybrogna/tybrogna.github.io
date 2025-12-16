@@ -25,7 +25,7 @@ const filedata = {
         'RENAME oldname,newname',
         'MON {,C} {,I} {,O}',
         'NOMON {,C} {,I} {,O}',
-        'OPEN name',
+        'LOAD name',
         'LIST'
     ],
     "resumeContent": [
@@ -37,8 +37,6 @@ const filedata = {
         '[ ] ski',
         '[ ] wor',
         '[ ] wpl',
-        '++ 21 FILES NOT LISTED',
-        '++ 8 TITLE(S)'
     ],
     "workHistoryLinks": [
         "<z>workAccusoft<z>Accusoft | Software Engineer III | Jan 2018 - Jul 2023 | Tampa Bay, FL.",
@@ -186,6 +184,9 @@ const filedata = {
         '<a>https://getbootstrap.com/<a>Bootstrap'
     ]
 }
+
+let numFiles = Object.keys(filedata).length - 8 - 2 //minus already listed files, header and commands
+filedata['resumeContent'].push('++ '+numFiles+' FILES NOT LISTED', '++ 8 TITLE(S)')
 
 function generateFilenames() {
     //look ma a hash algorithm for idiots
