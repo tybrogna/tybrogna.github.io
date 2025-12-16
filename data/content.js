@@ -126,32 +126,37 @@ const filedata = {
         "The instructions that ran the functions I wrote were written in Excel. I worked with the QA team to devise the excel commands, and the functions that those commands would run."
     ],
     "personalProjectLinks": [
+        '<z>personalProjectBingo<z>Bingo Web App | node.js + other tools | 2026',
         '<z>personalProjectWebScraper<z>Python Web Scraper | Python | 2024',
         '<z>personalProjectWindmillSlam<z>Game Jam: Windmill Slam | Godot 4 | 2023',
         '<z>personalProjectToomWorld<z>Game Jam: TOOM WORLD | Godot 3 | 2022',
-        '<z>personalProjectBingo<z>Bingo Web App | node.js + other tools | 2020',
         '<z>personalProjectCube<z>Magic: The Gathering Cube | Google Sheets | 2024',
         '<z>personalProjectPortfolio<z>This Website | JavaScript | 2023-2024',
     ],
+    "personalProjectBingo": [
+        "<t>The Game Awards Bingo Web App",
+        "<a>https://tga.zone<a> View Online at tga.zone",
+        "<a>https://github.com/tybrogna/tga-bingo/<a> View source on Github",
+        "Wrote server and backend for fun and learning purposes. The \"fun\" comes in from a, uh... Tradition? Where people would create a bingo card to try and guess what would happen at the erstwhile games industry press expo, E3. You guess what's going to be announced or happen at the show, and fill out the card. About a dozen friends and acquaintances would jump in discord and play. The learning comes from all the new things I used to create this. The build pipeline is done with Oracle Cloud and Docker Compose. For the backend, I used Vite, Node.js, express.js, nginx, and postgres. And the frontend is built with Preact, Bootstrap, and JavaScript. There's even a form I made to create bingo tiles easier.",
+    ],
     "personalProjectWebScraper": [
+        "<t>GameFAQs Web Scraper",
         "<a>https://github.com/tybrogna/gamefaqs_scraper<a>View Python Web Scraper on Github",
         "A web scraper to copy all the content from gamefaqs.com. A project for me to learn python. It saves its own progress, corrects broken links, validates scraped pages, and even has a GUI built with tkinter.",
         "Thanks to this, Python easily became one of my favorite languages. I also learned that you need to have discipline, since it can be very easy to confuse yourself if you\'re not explicit in your instructions."
     ],
     "personalProjectWindmillSlam": [
-        '<a>https://tavoe.itch.io/windmillslam<a>View Windmill Slam on itch.io',
+        '<t>Windmill Slam',
+        '<a>https://tavoe.itch.io/windmillslam<a>Play Windmill Slam on itch.io',
         'A rogue-like deckbuilding card battle game. I programmed card effects, UI elements, and graphics effects. I distinctly remember learning about Godot\'s particle systems and making pop up notifications work with the signal system.',
         'Made in three days with a team of three. The version you see on itch.io is the result of a couple more days of polish and bug fixing.'
     ],
     "personalProjectToomWorld": [
-        "<a>https://tavoe.itch.io/toom-world<a>Game Jam: TOOM WORLD (itch.io)",
+        "<t>TOOM WORLD",
+        "<a>https://tavoe.itch.io/toom-world<a>Play TOOM WORLD on itch.io",
         "A 3d first-person metroidvania shooter. I wrote the character controller, designed levels rooms, programmed weapons, powers, and enemies. Written in Godot 3 with GDscript.",
         "The responsibility for both programming how the player controlled and the levels to challenge their abilites was an incredible feeling. I ended up making the levels too hard because of that!",
         "Result of a game jam on a team of four, over one month."
-    ],
-    "personalProjectBingo": [
-        "<t>Bingo Web App",
-        "Wrote server and backend for fun and learning purposes. Used Node.js, express.js, SQLite3. It isn\'t done yet. Currently working on learning AWS and scalable web systems to bring this further along.",
     ],
     "personalProjectCube": [
         "<a>https://cubecobra.com/cube/overview/neo-mtg<a>View Neo Magic: The Gathering Cube on CubeCobra",
